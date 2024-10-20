@@ -34,9 +34,9 @@ const Sidebar: React.FC<SidebarProps> = ({
   const showYouTubeFilter = resourceTypeFilter.includes('YouTube');
   const showDocsFilter = resourceTypeFilter.includes('Docs');
 
-  const [contentType, setContentType] = useState<string[]>([]);
-  const [resourceType, setResourceType] = useState<string[]>([]);
-  const [keywords, setKeywords] = useState<string[]>([]);
+  const [contentType, setContentType] = useState<string[]>(contentTypeFilter);
+  const [resourceType, setResourceType] = useState<string[]>(resourceTypeFilter);
+  const [keywords, setKeywords] = useState<string[]>(keywordsFilter);
 
   const handleSelect = (setter: React.Dispatch<React.SetStateAction<string[]>>) => (value: string) => {
     setter(prev => prev.includes(value) ? prev.filter(item => item !== value) : [...prev, value])
@@ -49,6 +49,13 @@ const Sidebar: React.FC<SidebarProps> = ({
   const handleApply = () => {
     // Apply filters logic here
     console.log('Filters applied')
+  }
+
+  const handleClearAll = () => {
+    setContentType([]);
+    setResourceType([]);
+    setKeywords([]);
+    clearAllFilters();
   }
 
   return (
@@ -112,7 +119,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             <Button
               variant="ghost"
               size="sm"
-              onClick={clearAllFilters}
+              onClick={handleClearAll}
               className="text-xs bg-red-500 bg-opacity-70 hover:bg-red-600 transition-all duration-300 text-white font-semibold hover:text-white ease-in-out hover:scale-105 hover:shadow-md"
             >
               <X className="mr-1 h-4 w-4" />
