@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import { Home, BookOpen, Upload, Sliders, X, Compass } from 'lucide-react';
@@ -34,6 +34,23 @@ const Sidebar: React.FC<SidebarProps> = ({
   const showYouTubeFilter = resourceTypeFilter.includes('YouTube');
   const showDocsFilter = resourceTypeFilter.includes('Docs');
 
+  const [contentType, setContentType] = useState<string[]>([]);
+  const [resourceType, setResourceType] = useState<string[]>([]);
+  const [keywords, setKeywords] = useState<string[]>([]);
+
+  const handleSelect = (setter: React.Dispatch<React.SetStateAction<string[]>>) => (value: string) => {
+    setter(prev => prev.includes(value) ? prev.filter(item => item !== value) : [...prev, value])
+  }
+
+  const handleRemove = (setter: React.Dispatch<React.SetStateAction<string[]>>) => (value: string) => {
+    setter(prev => prev.filter(item => item !== value))
+  }
+
+  const handleApply = () => {
+    // Apply filters logic here
+    console.log('Filters applied')
+  }
+
   return (
     <aside className="w-64 border-r h-screen flex flex-col">
       <div className="p-4">
@@ -41,7 +58,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           BlogAI
         </h1>
       </div>
-      <nav className="mt-8 flex-grow space-y-2 px-4 mb-8">
+      <nav className="mt-8 space-y-2 px-4">
         <Link href="/" passHref>
           <Button
             variant="ghost"
@@ -88,80 +105,109 @@ const Sidebar: React.FC<SidebarProps> = ({
           </Button>
         </Link>
       </nav>
-      <div className="p-4 border-t flex-shrink-0 overflow-y-auto">
-        <div className="flex justify-between items-center mb-2">
-          <h3 className="font-semibold text-sm">Filter Blogs</h3>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={clearAllFilters}
-            className="text-xs bg-red-500 bg-opacity-70 hover:bg-red-600 transition-all duration-300 text-white font-semibold hover:text-white ease-in-out hover:scale-105 hover:shadow-md"
-          >
-            <X />
-            Clear All
-          </Button>
+      <div className="flex-grow overflow-hidden flex flex-col">
+        <div className="p-4 border-t">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="font-semibold text-lg">Filter Blogs</h3>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={clearAllFilters}
+              className="text-xs bg-red-500 bg-opacity-70 hover:bg-red-600 transition-all duration-300 text-white font-semibold hover:text-white ease-in-out hover:scale-105 hover:shadow-md"
+            >
+              <X className="mr-1 h-4 w-4" />
+              Clear All
+            </Button>
+          </div>
         </div>
-        <div className="space-y-0">
-          <FilterDropdown
-            title="Content Type"
-            options={['Technology', 'Productivity', 'Lifestyle']}
-            selected={contentTypeFilter}
-            onSelect={(value) => handleFilterChange('contentType', value)}
-            onRemove={(value) => handleFilterChange('contentType', value)}
-            onApply={() => {}}
-          />
-          <FilterDropdown
-            title="Resource Type"
-            options={['Website', 'PDF', 'YouTube', 'Docs']}
-            selected={resourceTypeFilter}
-            onSelect={(value) => handleFilterChange('resourceType', value)}
-            onRemove={(value) => handleFilterChange('resourceType', value)}
-            onApply={() => {}}
-          />
-          <FilterDropdown
-            title="Keywords"
-            options={['AI', 'Machine Learning', 'Web Development', 'Data Science']}
-            selected={keywordsFilter}
-            onSelect={(value) => handleFilterChange('keywords', value)}
-            onRemove={(value) => handleFilterChange('keywords', value)}
-            onApply={() => {}}
-          />
-          <FilterDropdown
-            title="Select Website"
-            options={['Website 1', 'Website 2', 'Website 3']}
-            selected={websiteFilter}
-            onSelect={(value) => handleFilterChange('website', value)}
-            onRemove={(value) => handleFilterChange('website', value)}
-            visible={showWebsiteFilter}
-            onApply={() => {}}
-          />
-          <FilterDropdown
-            title="Select PDFs"
-            options={['PDF 1', 'PDF 2', 'PDF 3']}
-            selected={pdfFilter}
-            onSelect={(value) => handleFilterChange('pdf', value)}
-            onRemove={(value) => handleFilterChange('pdf', value)}
-            visible={showPDFFilter}
-            onApply={() => {}}
-          />
-          <FilterDropdown
-            title="Select YouTube Links"
-            options={['YouTube 1', 'YouTube 2', 'YouTube 3']}
-            selected={youtubeFilter}
-            onSelect={(value) => handleFilterChange('youtube', value)}
-            onRemove={(value) => handleFilterChange('youtube', value)}
-            visible={showYouTubeFilter}
-            onApply={() => {}}
-          />
-          <FilterDropdown
-            title="Select Google Docs"
-            options={['Doc 1', 'Doc 2', 'Doc 3']}
-            selected={docsFilter}
-            onSelect={(value) => handleFilterChange('docs', value)}
-            onRemove={(value) => handleFilterChange('docs', value)}
-            visible={showDocsFilter}
-            onApply={() => {}}
-          />
+        <div className="overflow-y-auto flex-grow px-4 pb-4">
+          <div className="space-y-6">
+            <div>
+              <h4 className="font-medium text-sm mb-2 text-gray-600">Content Type</h4>
+              <FilterDropdown
+                title="Select content type"
+                options={['Blog Post', 'Article', 'News', 'Tutorial']}
+                selected={contentType}
+                onSelect={handleSelect(setContentType)}
+                onRemove={handleRemove(setContentType)}
+                onApply={handleApply}
+              />
+            </div>
+            <div>
+              <h4 className="font-medium text-sm mb-2 text-gray-600">Resource Type</h4>
+              <FilterDropdown
+                title="Select resource type"
+                options={['PDF', 'Video', 'Audio', 'Infographic']}
+                selected={resourceType}
+                onSelect={handleSelect(setResourceType)}
+                onRemove={handleRemove(setResourceType)}
+                onApply={handleApply}
+              />
+            </div>
+            <div>
+              <h4 className="font-medium text-sm mb-2 text-gray-600">Keywords</h4>
+              <FilterDropdown
+                title="Select keywords"
+                options={['AI', 'Machine Learning', 'Web Development', 'Data Science']}
+                selected={keywords}
+                onSelect={handleSelect(setKeywords)}
+                onRemove={handleRemove(setKeywords)}
+                onApply={handleApply}
+              />
+            </div>
+            {showWebsiteFilter && (
+              <div>
+                <h4 className="font-medium text-sm mb-2 text-gray-600">Websites</h4>
+                <FilterDropdown
+                  title="Select website"
+                  options={['Website 1', 'Website 2', 'Website 3']}
+                  selected={websiteFilter}
+                  onSelect={(value) => handleFilterChange('website', value)}
+                  onRemove={(value) => handleFilterChange('website', value)}
+                  onApply={() => {}}
+                />
+              </div>
+            )}
+            {showPDFFilter && (
+              <div>
+                <h4 className="font-medium text-sm mb-2 text-gray-600">PDFs</h4>
+                <FilterDropdown
+                  title="Select PDFs"
+                  options={['PDF 1', 'PDF 2', 'PDF 3']}
+                  selected={pdfFilter}
+                  onSelect={(value) => handleFilterChange('pdf', value)}
+                  onRemove={(value) => handleFilterChange('pdf', value)}
+                  onApply={() => {}}
+                />
+              </div>
+            )}
+            {showYouTubeFilter && (
+              <div>
+                <h4 className="font-medium text-sm mb-2 text-gray-600">YouTube Links</h4>
+                <FilterDropdown
+                  title="Select YouTube links"
+                  options={['YouTube 1', 'YouTube 2', 'YouTube 3']}
+                  selected={youtubeFilter}
+                  onSelect={(value) => handleFilterChange('youtube', value)}
+                  onRemove={(value) => handleFilterChange('youtube', value)}
+                  onApply={() => {}}
+                />
+              </div>
+            )}
+            {showDocsFilter && (
+              <div>
+                <h4 className="font-medium text-sm mb-2 text-gray-600">Google Docs</h4>
+                <FilterDropdown
+                  title="Select Google Docs"
+                  options={['Doc 1', 'Doc 2', 'Doc 3']}
+                  selected={docsFilter}
+                  onSelect={(value) => handleFilterChange('docs', value)}
+                  onRemove={(value) => handleFilterChange('docs', value)}
+                  onApply={() => {}}
+                />
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </aside>
