@@ -4,7 +4,7 @@ import Layout from '../components/Layout';
 export default function Explore() {
   return (
     <Layout>
-      <h1>Explore</h1>
+      <h1 className="text-5xl font-bold">Explore</h1>
     </Layout>
   );
 }

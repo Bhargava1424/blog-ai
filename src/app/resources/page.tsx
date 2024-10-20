@@ -4,7 +4,7 @@ import Layout from '../components/Layout';
 export default function Resources() {
   return (
     <Layout>
-      <h1>Resources</h1>
+      <h1 className="text-5xl font-bold">Resources</h1>
     </Layout>
   );
 }

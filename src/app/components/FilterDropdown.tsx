@@ -1,14 +1,14 @@
-import React from 'react';
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Badge } from "@/components/ui/badge";
-import { X, ChevronDown } from 'lucide-react';
+import React from 'react'
+import { Button } from "@/components/ui/button"
+import { Label } from "@/components/ui/label"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Badge } from "@/components/ui/badge"
+import { X, ChevronDown } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu"
 import {
   Command,
   CommandEmpty,
@@ -16,26 +16,26 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/ui/command";
+} from "@/components/ui/command"
 
 interface FilterDropdownProps {
-  title: string;
-  options: string[];
-  selected: string[];
-  onSelect: (value: string) => void;
-  onRemove: (value: string) => void;
-  onApply: () => void;
-  visible?: boolean;
+  title: string
+  options: string[]
+  selected: string[]
+  onSelect: (value: string) => void
+  onRemove: (value: string) => void
+  onApply: () => void
+  visible?: boolean
 }
 
-export const FilterDropdown: React.FC<FilterDropdownProps> = ({
-  title,
-  options,
-  selected,
-  onSelect,
-  onRemove,
-  onApply,
-  visible = true
+export const FilterDropdown: React.FC<FilterDropdownProps> = ({ 
+  title, 
+  options, 
+  selected, 
+  onSelect, 
+  onRemove, 
+  onApply, 
+  visible = true 
 }) => {
   if (!visible) return null;
 
@@ -60,7 +60,7 @@ export const FilterDropdown: React.FC<FilterDropdownProps> = ({
                     onSelect={() => onSelect(option)}
                     className="flex items-center space-x-2 px-2 py-1.5 cursor-pointer"
                   >
-                    <div
+                    <div 
                       className="flex items-center space-x-2 w-full"
                       onClick={(e) => {
                         e.preventDefault();
@@ -71,6 +71,7 @@ export const FilterDropdown: React.FC<FilterDropdownProps> = ({
                       <Checkbox
                         checked={selected.includes(option)}
                         id={`checkbox-${option}`}
+                        onChange={() => onSelect(option)}
                       />
                       <label
                         htmlFor={`checkbox-${option}`}

@@ -4,7 +4,7 @@ import Layout from '../components/Layout';
 export default function Preferences() {
   return (
     <Layout>
-      <h1>Preferences</h1>
+      <h1 className="text-5xl font-bold">Preferences</h1>
     </Layout>
   );
 }
