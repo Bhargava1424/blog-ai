@@ -1,10 +1,10 @@
 import React from 'react';
 import Layout from '../components/Layout';
 
-export default function Explore() {
+export default function Preferences() {
   return (
     <Layout>
-      <h1>Explore</h1>
+      <h1>Preferences</h1>
     </Layout>
   );
 }
