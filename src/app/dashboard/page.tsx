@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout } from '../components/Layout';
+import Layout from '../components/Layout'; // Adjust based on export type
 
 export default function Dashboard() {
   return (
