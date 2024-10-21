@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/drawer"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
+import { Badge } from "@/components/ui/badge"
 
 export default function Dashboard() {
   const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null);
@@ -103,15 +104,12 @@ export default function Dashboard() {
                 <p className="text-gray-600 mb-2 text-sm line-clamp-2">{blog.summary}</p>
                 <div className="flex flex-wrap gap-1 mb-2">
                   {blog.tags.slice(0, 2).map((tag, tagIndex) => (
-                    <span
-                      key={tagIndex}
-                      className="bg-blue-400 text-black text-xs font-semibold px-2 py-0.5 rounded"
-                    >
+                    <Badge key={tagIndex} variant="secondary">
                       {tag}
-                    </span>
+                    </Badge>
                   ))}
                   {blog.tags.length > 2 && (
-                    <span className="text-xs text-gray-500">+{blog.tags.length - 2} more</span>
+                    <Badge variant="Outline">+{blog.tags.length - 2} more</Badge>
                   )}
                 </div>
                 <p className="text-xs text-gray-500">Type: {blog.structure_type}</p>
@@ -132,8 +130,8 @@ export default function Dashboard() {
                   <Drawer>
                     <DrawerTrigger asChild>
                       <Button 
+                        variant="secondary"
                         onClick={() => openPreview(blog)}
-                        className="bg-gray-900 hover:opacity-100 text-white px-3 py-1 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors"
                       >
                         Preview
                       </Button>
@@ -173,7 +171,7 @@ export default function Dashboard() {
                       </div>
                       <DrawerFooter className="flex justify-between">
                         <Link href={`/blog/${blogs.indexOf(selectedBlog!)}`} passHref>
-                          <Button className="bg-blue-600 hover:bg-blue-700 text-white">Read Full Article</Button>
+                          <Button >Read Full Article</Button>
                         </Link>
                         <DrawerClose asChild>
                           <Button variant="outline">Close</Button>
@@ -182,7 +180,7 @@ export default function Dashboard() {
                     </DrawerContent>
                   </Drawer>
                   <Link href={`/blog/${index}`} passHref>
-                    <Button className="bg-[#083b13] hover:bg-[#0d491a72] text-white px-3 py-1 rounded-full text-sm font-medium transition-colors">
+                    <Button >
                       Open
                     </Button>
                   </Link>

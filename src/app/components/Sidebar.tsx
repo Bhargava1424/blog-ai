@@ -117,12 +117,8 @@ const Sidebar: React.FC<SidebarProps> = ({
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-semibold text-lg">Filter Blogs</h3>
             <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleClearAll}
-              className="text-xs bg-red-500 bg-opacity-70 hover:bg-red-600 transition-all duration-300 text-white font-semibold hover:text-white ease-in-out hover:scale-105 hover:shadow-md"
-            >
-              <X className="mr-1 h-4 w-4" />
+              variant="secondary"
+            > 
               Clear All
             </Button>
           </div>
