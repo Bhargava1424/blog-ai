@@ -323,29 +323,6 @@ export const blogs: Blog[] = [
     conclusion: 'The e-commerce surge is likely to have lasting effects on the retail landscape.'
   },
   {
-    structure_type: 'opinion',
-    title: 'Why Mental Health Awareness Should Be a Global Priority',
-    main_image: {
-      path: 'https://img.freepik.com/premium-photo/visual-representation-mental-health_980928-49065.jpg',
-      alt_text: 'Person meditating outdoors',
-      caption: 'Promoting mental well-being in daily life.'
-    },
-    summary: 'An opinion piece on the critical need for increased mental health awareness and support systems.',
-    introduction: {
-      text: 'Mental health is as important as physical health, yet it often doesn\'t receive the attention it deserves.'
-    },
-    key_words: ['Mental Health', 'Wellness', 'Awareness', 'Opinion'],
-    tags: ['Health', 'Opinion', 'Mental Wellness', 'Awareness'],
-    body: {
-      paragraphs: [
-        'Stigmatization prevents many from seeking help.',
-        'Education can lead to early detection and intervention.',
-        'Workplaces should prioritize mental health support.'
-      ]
-    },
-    conclusion: 'Collective efforts are needed to make mental health a global priority, ensuring support is accessible to all.'
-  },
-  {
     structure_type: 'news_update',
     title: 'SpaceX Achieves Milestone with Starship Test Flight',
     main_image: {
@@ -486,5 +463,28 @@ export const blogs: Blog[] = [
       // Additional Q&As...
     ],
     conclusion: 'Maya\'s dedication reminds us that everyone has a role to play in protecting our planet.'
-  }
+  },
+  {
+    structure_type: 'opinion',
+    title: 'Why Mental Health Awareness Should Be a Global Priority',
+    main_image: {
+      path: 'https://img.freepik.com/premium-photo/visual-representation-mental-health_980928-49065.jpg',
+      alt_text: 'Person meditating outdoors',
+      caption: 'Promoting mental well-being in daily life.'
+    },
+    summary: 'An opinion piece on the critical need for increased mental health awareness and support systems.',
+    introduction: {
+      text: 'Mental health is as important as physical health, yet it often doesn\'t receive the attention it deserves.'
+    },
+    key_words: ['Mental Health', 'Wellness', 'Awareness', 'Opinion'],
+    tags: ['Health', 'Opinion', 'Mental Wellness', 'Awareness'],
+    body: {
+      paragraphs: [
+        'Stigmatization prevents many from seeking help.',
+        'Education can lead to early detection and intervention.',
+        'Workplaces should prioritize mental health support.'
+      ]
+    },
+    conclusion: 'Collective efforts are needed to make mental health a global priority, ensuring support is accessible to all.'
+  },
 ];

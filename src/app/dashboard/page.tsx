@@ -1,14 +1,34 @@
 // dashboard/page.tsx
 
-import React from 'react';
+"use client"
+
+import React, { useState } from 'react';
 import { blogs } from '../data/blog';
 import Link from 'next/link';
 import Image from 'next/image';
 import Layout from '../components/Layout';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { FaTwitter, FaWhatsapp, FaLinkedin } from 'react-icons/fa';
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer"
+import { Button } from "@/components/ui/button"
 
 export default function Dashboard() {
+  const [selectedBlog, setSelectedBlog] = useState(null);
+
+  const openPreview = (blog) => {
+    setSelectedBlog(blog);
+  };
+
   return (
     <Layout>
       <div className="container mx-auto px-4 py-8">
@@ -36,7 +56,7 @@ export default function Dashboard() {
                   {blog.tags.slice(0, 2).map((tag, tagIndex) => (
                     <span
                       key={tagIndex}
-                      className="bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-0.5 rounded"
+                      className="bg-blue-400 text-black text-xs font-semibold px-2 py-0.5 rounded"
                     >
                       {tag}
                     </span>
@@ -47,10 +67,55 @@ export default function Dashboard() {
                 </div>
                 <p className="text-xs text-gray-500">Type: {blog.structure_type}</p>
               </CardContent>
-              <CardFooter className="p-3 pt-0">
-                <Link href={`/blog/${index}`} className="text-blue-600 hover:underline text-sm">
-                  Read more
-                </Link>
+              <CardFooter className="p-3 pt-0 flex justify-between items-center">
+                <div className="flex space-x-2">
+                  <button className="text-gray-500 hover:text-blue-500" aria-label="Share on Twitter">
+                    <FaTwitter size={20} />
+                  </button>
+                  <button className="text-gray-500 hover:text-green-500" aria-label="Share on WhatsApp">
+                    <FaWhatsapp size={20} />
+                  </button>
+                  <button className="text-gray-500 hover:text-blue-700" aria-label="Share on LinkedIn">
+                    <FaLinkedin size={20} />
+                  </button>
+                </div>
+                <Drawer>
+                  <DrawerTrigger asChild>
+                    <Button 
+                      onClick={() => openPreview(blog)}
+                      className="bg-gray-900 hover:opacity-100 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors"
+                    >
+                      Preview
+                    </Button>
+                  </DrawerTrigger>
+                  <DrawerContent>
+                    <DrawerHeader>
+                      <DrawerTitle>{selectedBlog?.title}</DrawerTitle>
+                    </DrawerHeader>
+                    <div className="p-4 pb-0">
+                      <div className="w-full max-w-md mx-auto">
+                        <AspectRatio ratio={16 / 9}>
+                          <Image
+                            src={selectedBlog?.main_image.path}
+                            alt={selectedBlog?.main_image.alt_text}
+                            fill
+                            className="object-cover rounded-lg"
+                          />
+                        </AspectRatio>
+                      </div>
+                      <p className="mt-4 text-sm text-gray-600">{selectedBlog?.summary}</p>
+                      {/* Add more content here based on the blog structure */}
+                    </div>
+                    <DrawerFooter>
+                      <Link href={`/blog/${blogs.indexOf(selectedBlog)}`} passHref>
+                        <Button>Read Full Article</Button>
+                      </Link>
+                      <DrawerClose asChild>
+                        <Button variant="outline">Close</Button>
+                      </DrawerClose>
+                    </DrawerFooter>
+                  </DrawerContent>
+                </Drawer>
               </CardFooter>
             </Card>
           ))}
