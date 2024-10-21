@@ -142,74 +142,6 @@ export type Image = {
   
   export const blogs: Blog[] = [
     {
-      structure_type: 'tutorial',
-      title: 'How to Bake the Perfect Sourdough Bread at Home',
-      main_image: {
-        path: 'https://amberskitchencooks.com/wp-content/uploads/2022/07/crusty-dutch-oven-sourdough-bread.jpg',
-        alt_text: 'Freshly baked sourdough bread on a cooling rack',
-        caption: 'Homemade sourdough bread fresh out of the oven.'
-      },
-      summary: 'A step-by-step guide to baking delicious sourdough bread in your own kitchen.',
-      introduction: {
-        text: 'Sourdough bread has a rich flavor and a delightful texture. This tutorial will walk you through the process of making your own sourdough starter and baking bread.'
-      },
-      key_words: ['Sourdough Bread', 'Baking Tutorial', 'Homemade Bread', 'Sourdough Starter'],
-      tags: ['Baking', 'Tutorial', 'Cooking', 'Sourdough'],
-      steps: [
-        {
-          step_number: 1,
-          title: 'Create Your Sourdough Starter',
-          image: {
-            path: 'https://images.unsplash.com/photo-1588854337115-2d25b6a6664d',
-            alt_text: 'Jar of sourdough starter',
-            caption: 'Feeding the sourdough starter daily.'
-          },
-          instruction: 'Mix equal parts of flour and water in a jar, and feed it daily for a week.'
-        },
-        {
-          step_number: 2,
-          title: 'Prepare the Dough',
-          image: {
-            path: 'https://images.unsplash.com/photo-1519046905439-6e33c849c58b',
-            alt_text: 'Mixing dough in a bowl',
-            caption: 'Combining ingredients to make the dough.'
-          },
-          instruction: 'Combine your starter with flour, water, and salt to form the dough.'
-        }
-        // Additional steps...
-      ],
-      conclusion: 'Enjoy your homemade sourdough bread fresh or store it for later. Happy baking!'
-    },
-    {
-      structure_type: 'comparison',
-      title: 'DSLR vs. Mirrorless Cameras: Which One Should You Choose?',
-      main_image: {
-        path: 'https://t4.ftcdn.net/jpg/07/44/26/31/360_F_744263175_FWcxLHnd8eUrOtIaxojuRbqbqbJKjnju.jpg',
-        alt_text: 'DSLR and mirrorless cameras side by side',
-        caption: 'A side-by-side look at DSLR and mirrorless cameras.'
-      },
-      summary: 'An in-depth comparison of DSLR and mirrorless cameras to help photographers make an informed decision.',
-      introduction: {
-        text: 'Choosing between a DSLR and a mirrorless camera can be challenging. This article breaks down the key differences.'
-      },
-      key_words: ['DSLR', 'Mirrorless Camera', 'Photography Equipment', 'Camera Comparison'],
-      tags: ['Photography', 'Comparison', 'Cameras', 'Equipment'],
-      comparison_points: [
-        {
-          feature: 'Image Quality',
-          dslr: 'Excellent image quality with a wide range of lenses.',
-          mirrorless: 'Comparable image quality with advanced sensor technology.'
-        },
-        {
-          feature: 'Size and Weight',
-          dslr: 'Generally bulkier due to the mirror mechanism.',
-          mirrorless: 'More compact and lightweight, easier to carry around.'
-        }
-        // Additional comparison points...
-      ],
-      conclusion: 'Your choice depends on your specific needs, whether it\'s portability or a broader lens selection.'
-    },
-    {
       structure_type: 'review',
       title: 'Samsung Galaxy Z Fold3 5G: A Foldable Future',
       main_image: {
@@ -249,6 +181,43 @@ export type Image = {
       verdict: 'The Galaxy Z Fold3 is a glimpse into the future of smartphones, ideal for tech enthusiasts.'
     },
     {
+      structure_type: 'case_study',
+      title: 'Streaming Success: How Netflix Transformed Entertainment',
+      main_image: {
+        path: 'https://wallpapercat.com/w/full/2/5/1/45994-3000x2003-desktop-hd-netflix-wallpaper-photo.jpg',
+        alt_text: 'Netflix app on a smart TV',
+        caption: 'Netflix\'s impact on how we consume media.'
+      },
+      summary: 'An analysis of Netflix\'s rise and its disruptive impact on traditional media and entertainment industries.',
+      introduction: {
+        text: 'From DVD rentals to streaming giant, Netflix has revolutionized entertainment consumption.'
+      },
+      key_words: ['Netflix', 'Streaming', 'Entertainment Industry', 'Case Study'],
+      tags: ['Business', 'Case Study', 'Entertainment', 'Innovation'],
+      sections: [
+        {
+          title: 'The Shift to Streaming',
+          image: {
+            path: 'https://wallpapercat.com/w/full/2/5/1/45994-3000x2003-desktop-hd-netflix-wallpaper-photo.jpg',
+            alt_text: 'Person watching Netflix on a laptop',
+            caption: 'Streaming content anytime, anywhere.'
+          },
+          content: 'Netflix capitalized on high-speed internet to deliver on-demand content.'
+        },
+        {
+          title: 'Original Content Strategy',
+          image: {
+            path: 'https://wallpapercat.com/w/full/2/5/1/45994-3000x2003-desktop-hd-netflix-wallpaper-photo.jpg',
+            alt_text: 'Film crew shooting a scene',
+            caption: 'Investing in original productions.'
+          },
+          content: 'Producing original content has set Netflix apart from competitors.'
+        }
+        // Additional sections...
+      ],
+      conclusion: 'Netflix\'s innovative approach has reshaped the industry, setting new standards for content delivery.'
+    },
+    {
       structure_type: 'news_update',
       title: 'SpaceX Achieves Milestone with Starship Test Flight',
       main_image: {
@@ -286,27 +255,109 @@ export type Image = {
       conclusion: 'This milestone brings SpaceX one step closer to achieving interplanetary travel.'
     },
     {
-      structure_type: 'opinion',
-      title: 'Why Mental Health Awareness Should Be a Global Priority',
+      structure_type: 'listicle',
+      title: 'Top 10 Books Every Aspiring Entrepreneur Should Read',
       main_image: {
-        path: 'https://img.freepik.com/premium-photo/visual-representation-mental-health_980928-49065.jpg',
-        alt_text: 'Person meditating outdoors',
-        caption: 'Promoting mental well-being in daily life.'
+        path: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFqWkAEQvbqOLchtZaxrs1n7mOVVYaxZYbJw&s',
+        alt_text: 'Stack of business books',
+        caption: 'Essential reading for entrepreneurs.'
       },
-      summary: 'An opinion piece on the critical need for increased mental health awareness and support systems.',
+      summary: 'A curated list of books that provide valuable insights and lessons for entrepreneurs.',
       introduction: {
-        text: 'Mental health is as important as physical health, yet it often doesn\'t receive the attention it deserves.'
+        text: 'Knowledge is power. These books offer wisdom and strategies to help you succeed in your entrepreneurial journey.'
       },
-      key_words: ['Mental Health', 'Wellness', 'Awareness', 'Opinion'],
-      tags: ['Health', 'Opinion', 'Mental Wellness', 'Awareness'],
-      body: {
-        paragraphs: [
-          'Stigmatization prevents many from seeking help.',
-          'Education can lead to early detection and intervention.',
-          'Workplaces should prioritize mental health support.'
-        ]
+      key_words: ['Entrepreneurship', 'Business Books', 'Reading List', 'Startup Advice'],
+      tags: ['Business', 'Listicle', 'Books', 'Entrepreneurship'],
+      list_items: [
+        {
+          rank: 1,
+          title: 'The Lean Startup by Eric Ries',
+          image: {
+            path: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFqWkAEQvbqOLchtZaxrs1n7mOVVYaxZYbJw&s',
+            alt_text: 'Cover of The Lean Startup book',
+            caption: 'Embrace lean methodologies.'
+          },
+          description: 'Learn how to build a sustainable business through continuous innovation.'
+        },
+        {
+          rank: 2,
+          title: 'Zero to One by Peter Thiel',
+          image: {
+            path: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFqWkAEQvbqOLchtZaxrs1n7mOVVYaxZYbJw&s',
+            alt_text: 'Person reading Zero to One',
+            caption: 'Creating new value in the world.'
+          },
+          description: 'Insights on how to create unique businesses that shape the future.'
+        }
+        // Additional list items...
+      ],
+      conclusion: 'Reading these books can equip you with the knowledge to navigate the challenges of entrepreneurship.'
+    },
+    {
+      structure_type: 'tutorial',
+      title: 'Beginner\'s Guide to Basic Photography Techniques',
+      main_image: {
+        path: 'https://cdn.prod.website-files.com/5eb17e57534ba845bbfee70e/5f9fdfb6d0342bc8d40f4c03_photographyonlinecourses_b249dee68fee7a3917466fbd74962a3b_1000.jpeg',
+        alt_text: 'Camera lens focusing',
+        caption: 'Understanding the fundamentals of photography.'
       },
-      conclusion: 'Collective efforts are needed to make mental health a global priority, ensuring support is accessible to all.'
+      summary: 'Learn essential photography techniques to improve your skills and capture stunning images.',
+      introduction: {
+        text: 'Photography is a blend of art and science. This guide introduces you to the foundational techniques every beginner should know.'
+      },
+      key_words: ['Photography', 'Beginner\'s Guide', 'Photography Techniques', 'Tutorial'],
+      tags: ['Photography', 'Tutorial', 'Learning', 'Skills'],
+      steps: [
+        {
+          step_number: 1,
+          title: 'Understanding Exposure',
+          image: {
+            path: 'https://cdn.prod.website-files.com/5eb17e57534ba845bbfee70e/5f9fdfb6d0342bc8d40f4c03_photographyonlinecourses_b249dee68fee7a3917466fbd74962a3b_1000.jpeg',
+            alt_text: 'Exposure triangle diagram',
+            caption: 'Balancing aperture, shutter speed, and ISO.'
+          },
+          instruction: 'Learn how aperture, shutter speed, and ISO affect your images.'
+        },
+        {
+          step_number: 2,
+          title: 'Composing Your Shots',
+          image: {
+            path: 'https://cdn.prod.website-files.com/5eb17e57534ba845bbfee70e/5f9fdfb6d0342bc8d40f4c03_photographyonlinecourses_b249dee68fee7a3917466fbd74962a3b_1000.jpeg',
+            alt_text: 'Rule of thirds grid over a landscape photo',
+            caption: 'Using the rule of thirds for better composition.'
+          },
+          instruction: 'Apply composition rules like the rule of thirds to enhance visual appeal.'
+        }
+        // Additional steps...
+      ],
+      conclusion: 'Practice regularly to hone your photography skills and develop your unique style.'
+    },
+    {
+      structure_type: 'interview',
+      title: 'Protecting Our Planet: An Interview with Maya Green',
+      main_image: {
+        path: 'https://i.pinimg.com/originals/96/1d/27/961d27ec840890c86fc3cde4824c95cb.jpg',
+        alt_text: 'Portrait of Maya Green',
+        caption: 'Maya Green shares her passion for the environment.'
+      },
+      summary: 'We speak with Maya Green about her environmental initiatives and how individuals can make a difference.',
+      introduction: {
+        text: 'Maya Green is a leading voice in environmental activism. She discusses her journey and offers advice on sustainability.'
+      },
+      key_words: ['Interview', 'Eco-Activist', 'Environment', 'Sustainability'],
+      tags: ['Environment', 'Interview', 'Activism', 'Sustainability'],
+      questions_and_answers: [
+        {
+          question: 'What inspired you to become an eco-activist?',
+          answer: 'Witnessing the impact of pollution on local communities drove me to take action.'
+        },
+        {
+          question: 'How can individuals contribute to environmental conservation?',
+          answer: 'Small changes like reducing waste and supporting sustainable brands make a big difference.'
+        }
+        // Additional Q&As...
+      ],
+      conclusion: 'Maya\'s dedication reminds us that everyone has a role to play in protecting our planet.'
     },
   ];
   
