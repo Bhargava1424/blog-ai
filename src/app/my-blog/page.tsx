@@ -42,7 +42,7 @@ export default function MyBlog() {
                     <Image
                       src={blog.main_image.path}
                       alt={blog.main_image.alt_text}
-                      fill
+                      fillmak
                       className="object-cover"
                       unoptimized
                     />
