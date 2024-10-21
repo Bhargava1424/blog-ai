@@ -145,7 +145,7 @@ export const blogs: Blog[] = [
     structure_type: 'tutorial',
     title: 'How to Bake the Perfect Sourdough Bread at Home',
     main_image: {
-      path: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90',
+      path: 'https://amberskitchencooks.com/wp-content/uploads/2022/07/crusty-dutch-oven-sourdough-bread.jpg',
       alt_text: 'Freshly baked sourdough bread on a cooling rack',
       caption: 'Homemade sourdough bread fresh out of the oven.'
     },
@@ -184,7 +184,7 @@ export const blogs: Blog[] = [
     structure_type: 'comparison',
     title: 'DSLR vs. Mirrorless Cameras: Which One Should You Choose?',
     main_image: {
-      path: 'https://images.unsplash.com/photo-1549924231-f129b911e442',
+      path: 'https://t4.ftcdn.net/jpg/07/44/26/31/360_F_744263175_FWcxLHnd8eUrOtIaxojuRbqbqbJKjnju.jpg',
       alt_text: 'DSLR and mirrorless cameras side by side',
       caption: 'A side-by-side look at DSLR and mirrorless cameras.'
     },
@@ -213,7 +213,7 @@ export const blogs: Blog[] = [
     structure_type: 'review',
     title: 'Samsung Galaxy Z Fold3 5G: A Foldable Future',
     main_image: {
-      path: 'https://images.unsplash.com/photo-1615557484797-842c8a49d693',
+      path: 'https://images.macrumors.com/t/S-X1rSmCN9PFWDRnkl00WExibCo=/1600x0/article-new/2021/08/galaxy-z-fold-3.jpg',
       alt_text: 'Samsung Galaxy Z Fold3 unfolded',
       caption: 'Exploring the features of the Galaxy Z Fold3.'
     },
@@ -227,7 +227,7 @@ export const blogs: Blog[] = [
       {
         title: 'Design and Display',
         image: {
-          path: 'https://images.unsplash.com/photo-1603177081393-8d5fd45af70e',
+          path: 'https://images.macrumors.com/t/S-X1rSmCN9PFWDRnkl00WExibCo=/1600x0/article-new/2021/08/galaxy-z-fold-3.jpg',
           alt_text: 'Close-up of the Galaxy Z Fold3\'s hinge',
           caption: 'The engineering behind the foldable display.'
         },
@@ -236,7 +236,7 @@ export const blogs: Blog[] = [
       {
         title: 'Performance',
         image: {
-          path: 'https://images.unsplash.com/photo-1618401473983-d01e3e9b4bc6',
+          path: 'https://images.macrumors.com/t/S-X1rSmCN9PFWDRnkl00WExibCo=/1600x0/article-new/2021/08/galaxy-z-fold-3.jpg',
           alt_text: 'Galaxy Z Fold3 running multiple apps',
           caption: 'Multitasking capabilities of the Fold3.'
         },
@@ -252,7 +252,7 @@ export const blogs: Blog[] = [
     structure_type: 'case_study',
     title: 'Streaming Success: How Netflix Transformed Entertainment',
     main_image: {
-      path: 'https://images.unsplash.com/photo-1589403931121-6c2f49c4a7ab',
+      path: 'https://wallpapercat.com/w/full/2/5/1/45994-3000x2003-desktop-hd-netflix-wallpaper-photo.jpg',
       alt_text: 'Netflix app on a smart TV',
       caption: 'Netflix\'s impact on how we consume media.'
     },
@@ -266,7 +266,7 @@ export const blogs: Blog[] = [
       {
         title: 'The Shift to Streaming',
         image: {
-          path: 'https://images.unsplash.com/photo-1588702547950-dc968ebd6c3c',
+          path: 'https://wallpapercat.com/w/full/2/5/1/45994-3000x2003-desktop-hd-netflix-wallpaper-photo.jpg',
           alt_text: 'Person watching Netflix on a laptop',
           caption: 'Streaming content anytime, anywhere.'
         },
@@ -275,7 +275,7 @@ export const blogs: Blog[] = [
       {
         title: 'Original Content Strategy',
         image: {
-          path: 'https://images.unsplash.com/photo-1602016755561-4d06be728742',
+          path: 'https://wallpapercat.com/w/full/2/5/1/45994-3000x2003-desktop-hd-netflix-wallpaper-photo.jpg',
           alt_text: 'Film crew shooting a scene',
           caption: 'Investing in original productions.'
         },
@@ -289,7 +289,7 @@ export const blogs: Blog[] = [
     structure_type: 'industry_analysis',
     title: 'E-commerce Boom: How the Pandemic Accelerated Online Retail',
     main_image: {
-      path: 'https://images.unsplash.com/photo-1591012911206-6be3544ae8a0',
+      path: 'https://img.freepik.com/premium-photo/online-shopping-hd-8k-wallpaper-stock-photographic-image_890746-30374.jpg',
       alt_text: 'Online shopping cart on a laptop screen',
       caption: 'The surge in online shopping activities.'
     },
@@ -303,7 +303,7 @@ export const blogs: Blog[] = [
       {
         title: 'Growth Statistics',
         image: {
-          path: 'https://images.unsplash.com/photo-1593628750260-4f1b63d1641b',
+          path: 'https://img.freepik.com/premium-photo/online-shopping-hd-8k-wallpaper-stock-photographic-image_890746-30374.jpg',
           alt_text: 'Graph showing e-commerce growth',
           caption: 'E-commerce sales skyrocketing.'
         },
@@ -312,7 +312,7 @@ export const blogs: Blog[] = [
       {
         title: 'Changing Consumer Behavior',
         image: {
-          path: 'https://images.unsplash.com/photo-1601980362889-2a2e1d1eac2a',
+          path: 'https://img.freepik.com/premium-photo/online-shopping-hd-8k-wallpaper-stock-photographic-image_890746-30374.jpg',
           alt_text: 'Person shopping online with a smartphone',
           caption: 'Consumers adapting to online shopping.'
         },
@@ -326,7 +326,7 @@ export const blogs: Blog[] = [
     structure_type: 'opinion',
     title: 'Why Mental Health Awareness Should Be a Global Priority',
     main_image: {
-      path: 'https://images.unsplash.com/photo-1554224154-22dec7ec8818',
+      path: 'https://img.freepik.com/premium-photo/visual-representation-mental-health_980928-49065.jpg',
       alt_text: 'Person meditating outdoors',
       caption: 'Promoting mental well-being in daily life.'
     },
@@ -349,7 +349,7 @@ export const blogs: Blog[] = [
     structure_type: 'news_update',
     title: 'SpaceX Achieves Milestone with Starship Test Flight',
     main_image: {
-      path: 'https://images.unsplash.com/photo-1593956002974-dfef6eb3a16e',
+      path: 'https://wallpapercat.com/w/full/2/e/d/75866-3840x2160-desktop-4k-spacex-wallpaper.jpg',
       alt_text: 'SpaceX Starship launching',
       caption: 'The Starship embarking on its test flight.'
     },
@@ -363,7 +363,7 @@ export const blogs: Blog[] = [
       {
         title: 'Test Flight Objectives',
         image: {
-          path: 'https://images.unsplash.com/photo-1569699828494-650e9ac29fe7',
+          path: 'https://wallpapers.com/images/hd/spacex-rocket-ships-p55w14b10fsf83s3.jpg',
           alt_text: 'Engineers monitoring the test flight',
           caption: 'SpaceX team overseeing the launch.'
         },
@@ -372,7 +372,7 @@ export const blogs: Blog[] = [
       {
         title: 'Implications for Future Missions',
         image: {
-          path: 'https://images.unsplash.com/photo-1575981001456-a8a9d2f28229',
+          path: 'https://helios-i.mashable.com/imagery/articles/07fpP8w9Tci5gs4un3eb5ZF/hero-image.fill.size_1248x702.v1611612739.jpg',
           alt_text: 'Mars landscape',
           caption: 'Starship brings us closer to Mars exploration.'
         },
@@ -386,7 +386,7 @@ export const blogs: Blog[] = [
     structure_type: 'listicle',
     title: 'Top 10 Books Every Aspiring Entrepreneur Should Read',
     main_image: {
-      path: 'https://images.unsplash.com/photo-1495446815901-a7297e633e8d',
+      path: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFqWkAEQvbqOLchtZaxrs1n7mOVVYaxZYbJw&s',
       alt_text: 'Stack of business books',
       caption: 'Essential reading for entrepreneurs.'
     },
@@ -401,7 +401,7 @@ export const blogs: Blog[] = [
         rank: 1,
         title: 'The Lean Startup by Eric Ries',
         image: {
-          path: 'https://images.unsplash.com/photo-1579962675872-94bc17ad8452',
+          path: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFqWkAEQvbqOLchtZaxrs1n7mOVVYaxZYbJw&s',
           alt_text: 'Cover of The Lean Startup book',
           caption: 'Embrace lean methodologies.'
         },
@@ -411,7 +411,7 @@ export const blogs: Blog[] = [
         rank: 2,
         title: 'Zero to One by Peter Thiel',
         image: {
-          path: 'https://images.unsplash.com/photo-1602437704503-05cbbeb6bc61',
+          path: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFqWkAEQvbqOLchtZaxrs1n7mOVVYaxZYbJw&s',
           alt_text: 'Person reading Zero to One',
           caption: 'Creating new value in the world.'
         },
@@ -425,7 +425,7 @@ export const blogs: Blog[] = [
     structure_type: 'tutorial',
     title: 'Beginner\'s Guide to Basic Photography Techniques',
     main_image: {
-      path: 'https://images.unsplash.com/photo-1519183071298-a2962edba60f',
+      path: 'https://cdn.prod.website-files.com/5eb17e57534ba845bbfee70e/5f9fdfb6d0342bc8d40f4c03_photographyonlinecourses_b249dee68fee7a3917466fbd74962a3b_1000.jpeg',
       alt_text: 'Camera lens focusing',
       caption: 'Understanding the fundamentals of photography.'
     },
@@ -440,7 +440,7 @@ export const blogs: Blog[] = [
         step_number: 1,
         title: 'Understanding Exposure',
         image: {
-          path: 'https://images.unsplash.com/photo-1555414051-6f2725af4e48',
+          path: 'https://cdn.prod.website-files.com/5eb17e57534ba845bbfee70e/5f9fdfb6d0342bc8d40f4c03_photographyonlinecourses_b249dee68fee7a3917466fbd74962a3b_1000.jpeg',
           alt_text: 'Exposure triangle diagram',
           caption: 'Balancing aperture, shutter speed, and ISO.'
         },
@@ -450,7 +450,7 @@ export const blogs: Blog[] = [
         step_number: 2,
         title: 'Composing Your Shots',
         image: {
-          path: 'https://images.unsplash.com/photo-1519681393784-d120267933ba',
+          path: 'https://cdn.prod.website-files.com/5eb17e57534ba845bbfee70e/5f9fdfb6d0342bc8d40f4c03_photographyonlinecourses_b249dee68fee7a3917466fbd74962a3b_1000.jpeg',
           alt_text: 'Rule of thirds grid over a landscape photo',
           caption: 'Using the rule of thirds for better composition.'
         },
@@ -464,7 +464,7 @@ export const blogs: Blog[] = [
     structure_type: 'interview',
     title: 'Protecting Our Planet: An Interview with Maya Green',
     main_image: {
-      path: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1',
+      path: 'https://i.pinimg.com/originals/96/1d/27/961d27ec840890c86fc3cde4824c95cb.jpg',
       alt_text: 'Portrait of Maya Green',
       caption: 'Maya Green shares her passion for the environment.'
     },

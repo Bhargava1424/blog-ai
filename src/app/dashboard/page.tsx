@@ -21,6 +21,7 @@ export default function Dashboard() {
                   width={400}
                   height={300}
                   className="w-full h-48 object-cover mb-4 rounded"
+                  unoptimized
                 />
               )}
               <h2 className="text-xl font-semibold mb-2">{blog.title}</h2>
