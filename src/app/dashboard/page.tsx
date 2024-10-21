@@ -182,7 +182,7 @@ export default function Dashboard() {
                     </DrawerContent>
                   </Drawer>
                   <Link href={`/blog/${index}`} passHref>
-                    <Button className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-full text-sm font-medium transition-colors">
+                    <Button className="bg-[#083b13] hover:bg-[#0d491a72] text-white px-3 py-1 rounded-full text-sm font-medium transition-colors">
                       Open
                     </Button>
                   </Link>
