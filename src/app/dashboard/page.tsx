@@ -14,7 +14,6 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
-  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
@@ -79,43 +78,47 @@ export default function Dashboard() {
                     <FaLinkedin size={20} />
                   </button>
                 </div>
-                <Drawer>
-                  <DrawerTrigger asChild>
-                    <Button 
-                      onClick={() => openPreview(blog)}
-                      className="bg-gray-900 hover:opacity-100 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors"
-                    >
-                      Preview
-                    </Button>
-                  </DrawerTrigger>
-                  <DrawerContent>
-                    <DrawerHeader>
-                      <DrawerTitle>{selectedBlog?.title}</DrawerTitle>
-                    </DrawerHeader>
-                    <div className="p-4 pb-0">
-                      <div className="w-full max-w-md mx-auto">
-                        <AspectRatio ratio={16 / 9}>
-                          <Image
-                            src={selectedBlog?.main_image.path}
-                            alt={selectedBlog?.main_image.alt_text}
-                            fill
-                            className="object-cover rounded-lg"
-                          />
-                        </AspectRatio>
+                <div className="flex space-x-2">
+                  <Drawer>
+                    <DrawerTrigger asChild>
+                      <Button 
+                        onClick={() => openPreview(blog)}
+                        className="bg-gray-900 hover:opacity-100 text-white px-3 py-1 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors"
+                      >
+                        Preview
+                      </Button>
+                    </DrawerTrigger>
+                    <DrawerContent>
+                      <DrawerHeader>
+                        <DrawerTitle>{selectedBlog?.title}</DrawerTitle>
+                      </DrawerHeader>
+                      <div className="p-4 pb-0">
+                        <div className="w-full max-w-md mx-auto">
+                          <AspectRatio ratio={16 / 9}>
+                            <Image
+                              src={selectedBlog?.main_image.path}
+                              alt={selectedBlog?.main_image.alt_text}
+                              fill
+                              className="object-cover rounded-lg"
+                            />
+                          </AspectRatio>
+                        </div>
+                        <p className="mt-4 text-sm text-gray-600">{selectedBlog?.summary}</p>
+                        {/* Add more content here based on the blog structure */}
                       </div>
-                      <p className="mt-4 text-sm text-gray-600">{selectedBlog?.summary}</p>
-                      {/* Add more content here based on the blog structure */}
-                    </div>
-                    <DrawerFooter>
-                      <Link href={`/blog/${blogs.indexOf(selectedBlog)}`} passHref>
-                        <Button>Read Full Article</Button>
-                      </Link>
-                      <DrawerClose asChild>
-                        <Button variant="outline">Close</Button>
-                      </DrawerClose>
-                    </DrawerFooter>
-                  </DrawerContent>
-                </Drawer>
+                      <DrawerFooter>
+                        <DrawerClose asChild>
+                          <Button variant="outline">Close</Button>
+                        </DrawerClose>
+                      </DrawerFooter>
+                    </DrawerContent>
+                  </Drawer>
+                  <Link href={`/blog/${index}`} passHref>
+                    <Button className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-full text-sm font-medium transition-colors">
+                      Open
+                    </Button>
+                  </Link>
+                </div>
               </CardFooter>
             </Card>
           ))}
