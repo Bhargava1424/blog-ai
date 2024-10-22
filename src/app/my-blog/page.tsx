@@ -1,4 +1,4 @@
-// dashboard/page.tsx
+// MyBlog/page.tsx
 
 "use client"
 
@@ -22,12 +22,60 @@ import {
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 
 export default function MyBlog() {
   const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null);
+  const [wordpressUrl, setWordpressUrl] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [isPosting, setIsPosting] = useState(false);
 
   const openPreview = (blog: Blog) => {
     setSelectedBlog(blog);
+  };
+
+  const handlePostToWordPress = async () => {
+    if (!selectedBlog) return;
+
+    setIsPosting(true);
+
+    try {
+      // Construct HTML content with controlled image size
+      const content = `
+        <img src="${selectedBlog.main_image?.path}" alt="${selectedBlog.main_image?.alt_text}" style="max-width: 100%; height: auto; max-height: 400px; object-fit: cover;">
+        <p>${selectedBlog.summary}</p>
+        ${renderPreviewContent(selectedBlog)}
+      `;
+
+      const postData = {
+        title: selectedBlog.title,
+        content: content,
+        status: 'publish',
+      };
+
+      const response = await fetch(`${wordpressUrl}/wp-json/wp/v2/posts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Basic ' + btoa(username + ':' + password),
+        },
+        body: JSON.stringify(postData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(`Failed to post to WordPress: ${errorData.message}`);
+      }
+
+      alert('Blog successfully posted to WordPress!');
+    } catch (error) {
+      console.error('Error posting to WordPress:', error);
+      alert(`Failed to post blog to WordPress. Error: ${error.message}`);
+    } finally {
+      setIsPosting(false);
+    }
   };
 
   const renderPreviewContent = (blog: Blog) => {
@@ -37,11 +85,15 @@ export default function MyBlog() {
           <>
             <h3 className="font-semibold mt-4">Steps:</h3>
             <ol className="list-decimal list-inside">
-              {blog.steps.slice(0, 3).map((step, index) => (
-                <li key={index} className="mt-2">{step.title}</li>
+              {blog.steps.map((step, index) => (
+                <li key={index} className="mt-2">
+                  {step.title}
+                  {step.image && (
+                    <img src={step.image} alt={step.title} style="max-width: 100%; height: auto; max-height: 300px; object-fit: cover;" />
+                  )}
+                </li>
               ))}
             </ol>
-            {blog.steps.length > 3 && <p className="mt-2 text-sm text-gray-500">...and {blog.steps.length - 3} more steps</p>}
           </>
         );
       case 'comparison':
@@ -133,54 +185,57 @@ export default function MyBlog() {
                         variant="secondary"
                         onClick={() => openPreview(blog)}
                       >
-                        Preview
+                        Share
                       </Button>
                     </DrawerTrigger>
                     <DrawerContent>
                       <DrawerHeader>
-                        <DrawerTitle className="text-2xl font-bold">{selectedBlog?.title}</DrawerTitle>
+                        <DrawerTitle>Post to WordPress</DrawerTitle>
                       </DrawerHeader>
                       <div className="p-4 pb-0 max-w-4xl mx-auto">
-                        <div className="flex flex-col md:flex-row gap-6">
-                          <div className="w-full md:w-1/2">
-                            <AspectRatio ratio={16 / 9}>
-                              <Image
-                                src={selectedBlog?.main_image.path || ''}
-                                alt={selectedBlog?.main_image.alt_text || ''}
-                                fill
-                                className="object-cover rounded-lg"
-                              />
-                            </AspectRatio>
-                            <p className="mt-2 text-sm text-gray-500 italic">{selectedBlog?.main_image.caption}</p>
+                        <div className="grid w-full items-center gap-4">
+                          <div className="flex flex-col space-y-1.5">
+                            <Label htmlFor="wordpress-url">WordPress URL</Label>
+                            <Input 
+                              id="wordpress-url" 
+                              value={wordpressUrl}
+                              onChange={(e) => setWordpressUrl(e.target.value)}
+                              placeholder="https://your-wordpress-site.com"
+                            />
                           </div>
-                          <div className="w-full md:w-1/2">
-                            <div className="flex items-center mb-4 text-sm text-gray-500">
-                              <FaClock className="mr-2" />
-                              <span>5 min read</span>
-                              <FaTags className="ml-4 mr-2" />
-                              <span>{selectedBlog?.tags.join(', ')}</span>
-                            </div>
-                            <p className="text-gray-700">{selectedBlog?.summary}</p>
-                            {selectedBlog?.introduction && (
-                              <p className="mt-4 text-gray-700">{selectedBlog.introduction.text}</p>
-                            )}
-                            <Separator className="my-4" />
-                            {selectedBlog && renderPreviewContent(selectedBlog)}
+                          <div className="flex flex-col space-y-1.5">
+                            <Label htmlFor="username">Username</Label>
+                            <Input 
+                              id="username" 
+                              value={username}
+                              onChange={(e) => setUsername(e.target.value)}
+                              placeholder="WordPress username"
+                            />
+                          </div>
+                          <div className="flex flex-col space-y-1.5">
+                            <Label htmlFor="password">Password</Label>
+                            <Input 
+                              id="password" 
+                              type="password"
+                              value={password}
+                              onChange={(e) => setPassword(e.target.value)}
+                              placeholder="WordPress application password"
+                            />
                           </div>
                         </div>
                       </div>
-                      <DrawerFooter className="flex justify-between">
-                        <Link href={`/blog/${blogs.indexOf(selectedBlog!)}`} passHref>
-                          <Button >Read Full Article</Button>
-                        </Link>
+                      <DrawerFooter>
+                        <Button onClick={handlePostToWordPress} disabled={isPosting}>
+                          {isPosting ? 'Posting...' : 'Post to WordPress'}
+                        </Button>
                         <DrawerClose asChild>
-                          <Button variant="outline">Close</Button>
+                          <Button variant="outline">Cancel</Button>
                         </DrawerClose>
                       </DrawerFooter>
                     </DrawerContent>
                   </Drawer>
                   <Link href={`/blog/${index}`} passHref>
-                    <Button >
+                    <Button>
                       Open
                     </Button>
                   </Link>

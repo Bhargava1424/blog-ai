@@ -42,9 +42,9 @@ export default function Dashboard() {
     setIsPosting(true);
 
     try {
-      // Construct HTML content
+      // Construct HTML content with controlled image size
       const content = `
-        <img src="${selectedBlog.main_image?.path}" alt="${selectedBlog.main_image?.alt_text}">
+        <img src="${selectedBlog.main_image?.path}" alt="${selectedBlog.main_image?.alt_text}" style="max-width: 100%; height: auto; max-height: 400px; object-fit: cover;">
         <p>${selectedBlog.summary}</p>
         ${renderPreviewContent(selectedBlog)}
       `;
@@ -85,11 +85,15 @@ export default function Dashboard() {
           <>
             <h3 className="font-semibold mt-4">Steps:</h3>
             <ol className="list-decimal list-inside">
-              {blog.steps.slice(0, 3).map((step, index) => (
-                <li key={index} className="mt-2">{step.title}</li>
+              {blog.steps.map((step, index) => (
+                <li key={index} className="mt-2">
+                  {step.title}
+                  {step.image && (
+                    <img src={step.image} alt={step.title} style="max-width: 100%; height: auto; max-height: 300px; object-fit: cover;" />
+                  )}
+                </li>
               ))}
             </ol>
-            {blog.steps.length > 3 && <p className="mt-2 text-sm text-gray-500">...and {blog.steps.length - 3} more steps</p>}
           </>
         );
       case 'comparison':
