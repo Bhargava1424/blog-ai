@@ -2,30 +2,53 @@
 
 import React from 'react';
 import Sidebar from './Sidebar';
-import { TopNavigation } from './TopNavigation';
+import SecondSidebar from './SecondSidebar';
 
-const Layout = ({ children }) => {
-  const handleFilterChange = (filterType, value) => {
-    // Implement your filter change logic here
-    console.log(`Filter changed: ${filterType}, ${value}`);
-  };
+type FilterType = 'contentType' | 'resourceType' | 'keywords' | 'website' | 'pdf' | 'youtube' | 'docs';
 
-  const clearAllFilters = () => {
-    // Implement your clear filters logic here
-    console.log('All filters cleared');
-  };
+interface LayoutProps {
+  children: React.ReactNode;
+  contentTypeFilter?: string[];
+  resourceTypeFilter?: string[];
+  keywordsFilter?: string[];
+  websiteFilter?: string[];
+  pdfFilter?: string[];
+  youtubeFilter?: string[];
+  docsFilter?: string[];
+  handleFilterChange: (filterType: FilterType, value: string) => void;
+  clearAllFilters: () => void;
+}
 
+const Layout: React.FC<LayoutProps> = ({
+  children,
+  contentTypeFilter,
+  resourceTypeFilter,
+  keywordsFilter,
+  websiteFilter,
+  pdfFilter,
+  youtubeFilter,
+  docsFilter,
+  handleFilterChange,
+  clearAllFilters
+}) => {
   return (
-    <div className="flex">
-      <Sidebar
-        handleFilterChange={handleFilterChange}
-        clearAllFilters={clearAllFilters}
-      />
-      <div className="flex-1">
-        <TopNavigation />
-        <div className="p-4">
+    <div className="flex h-screen">
+      <Sidebar />
+      <div className="flex flex-1 overflow-hidden">
+        <SecondSidebar
+          contentTypeFilter={contentTypeFilter}
+          resourceTypeFilter={resourceTypeFilter}
+          keywordsFilter={keywordsFilter}
+          websiteFilter={websiteFilter}
+          pdfFilter={pdfFilter}
+          youtubeFilter={youtubeFilter}
+          docsFilter={docsFilter}
+          handleFilterChange={handleFilterChange}
+          clearAllFilters={clearAllFilters}
+        />
+        <main className="flex-1 overflow-y-auto">
           {children}
-        </div>
+        </main>
       </div>
     </div>
   );
