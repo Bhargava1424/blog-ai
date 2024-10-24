@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import { usePathname } from 'next/navigation';
 import Sidebar from './Sidebar';
 import SecondSidebar from './SecondSidebar';
 
@@ -31,22 +32,27 @@ const Layout: React.FC<LayoutProps> = ({
   handleFilterChange,
   clearAllFilters
 }) => {
+  const pathname = usePathname();
+  const showSecondSidebar = ['/', '/my-blog'].includes(pathname);
+
   return (
     <div className="flex h-screen">
       <Sidebar />
       <div className="flex flex-1 overflow-hidden">
-        <SecondSidebar
-          contentTypeFilter={contentTypeFilter}
-          resourceTypeFilter={resourceTypeFilter}
-          keywordsFilter={keywordsFilter}
-          websiteFilter={websiteFilter}
-          pdfFilter={pdfFilter}
-          youtubeFilter={youtubeFilter}
-          docsFilter={docsFilter}
-          handleFilterChange={handleFilterChange}
-          clearAllFilters={clearAllFilters}
-        />
-        <main className="flex-1 overflow-y-auto">
+        {showSecondSidebar && (
+          <SecondSidebar
+            contentTypeFilter={contentTypeFilter}
+            resourceTypeFilter={resourceTypeFilter}
+            keywordsFilter={keywordsFilter}
+            websiteFilter={websiteFilter}
+            pdfFilter={pdfFilter}
+            youtubeFilter={youtubeFilter}
+            docsFilter={docsFilter}
+            handleFilterChange={handleFilterChange}
+            clearAllFilters={clearAllFilters}
+          />
+        )}
+        <main className={`flex-1 overflow-y-auto ${showSecondSidebar ? '' : 'w-full'}`}>
           {children}
         </main>
       </div>
