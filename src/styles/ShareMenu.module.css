@@ -1,0 +1,21 @@
+.menuItem {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.twitter:hover {
+  background-color: #1da0f271;
+  color: white;
+}
+
+.whatsapp:hover {
+  background-color: #25d36571;
+  color: white;
+}
+
+.linkedin:hover {
+  background-color: #0A66C271;
+  color: white;
+}

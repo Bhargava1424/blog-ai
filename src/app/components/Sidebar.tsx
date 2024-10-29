@@ -26,13 +26,8 @@ const Sidebar: React.FC = () => {
   );
 
   return (
-    <aside className={`${isExpanded ? 'w-64' : 'w-16'} border-r h-screen flex flex-col transition-all duration-300 ease-in-out`}>
-      <div className="p-4 flex justify-between items-center">
-        {isExpanded && (
-          <h1 className="cursor-pointer text-2xl font-extrabold">
-            BlogAI
-          </h1>
-        )}
+    <aside className={`${isExpanded ? 'w-48' : 'w-16'} border-r h-screen flex flex-col transition-all duration-300 ease-in-out`}>
+      <div className="p-4 items-center"> 
         <Button
           variant="ghost"
           size="icon"

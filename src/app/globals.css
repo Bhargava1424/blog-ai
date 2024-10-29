@@ -92,3 +92,14 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.custom-popover-content {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 150ms ease-out, transform 150ms ease-out;
+}
+
+.custom-popover-content[data-state="open"] {
+  opacity: 1;
+  transform: scale(1);
+}

@@ -58,7 +58,7 @@ const FilterComponent: React.FC<FilterComponentProps> = ({
 
   return (
     <div className="flex-grow overflow-hidden flex flex-col">
-      <div className="p-4 border-t">
+      <div className="p-4">
         <div className="flex justify-between items-center mb-4">
           <h3 className="font-semibold text-lg">Filter Blogs</h3>
           <Button variant="secondary" onClick={handleClearAll}>

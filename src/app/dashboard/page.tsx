@@ -11,19 +11,24 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { FaTwitter, FaWhatsapp, FaLinkedin, FaClock, FaTags } from 'react-icons/fa';
 import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer"
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Share } from "lucide-react"
+import { cn } from "@/lib/utils"
+import styles from '@/styles/ShareMenu.module.css';
 
 export default function Dashboard() {
   const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null);
@@ -72,7 +77,7 @@ export default function Dashboard() {
       alert('Blog successfully posted to WordPress!');
     } catch (error) {
       console.error('Error posting to WordPress:', error);
-      alert(`Failed to post blog to WordPress. Error: ${error.message}`);
+      alert(`Failed to post blog to WordPress. Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setIsPosting(false);
     }
@@ -89,7 +94,11 @@ export default function Dashboard() {
                 <li key={index} className="mt-2">
                   {step.title}
                   {step.image && (
-                    <img src={step.image} alt={step.title} style="max-width: 100%; height: auto; max-height: 300px; object-fit: cover;" />
+                    <img 
+                      src={step.image} 
+                      alt={step.title} 
+                      style={{ maxWidth: '100%', height: 'auto', maxHeight: '300px', objectFit: 'cover' }} 
+                    />
                   )}
                 </li>
               ))}
@@ -131,13 +140,29 @@ export default function Dashboard() {
     }
   };
 
+  const handleShare = (platform: string, blogUrl: string) => {
+    let shareUrl = '';
+    switch (platform) {
+      case 'twitter':
+        shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(blogUrl)}`;
+        break;
+      case 'whatsapp':
+        shareUrl = `https://wa.me/?text=${encodeURIComponent(blogUrl)}`;
+        break;
+      case 'linkedin':
+        shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(blogUrl)}`;
+        break;
+    }
+    window.open(shareUrl, '_blank');
+  };
+
   return (
-    <Layout>
+    <Layout handleFilterChange={() => {}} clearAllFilters={() => {}}>
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {blogs.map((blog, index) => (
-            <Card key={index} className="overflow-hidden">
+            <Card key={index} className="overflow-hidden flex flex-col">
               <CardHeader className="p-0">
                 <AspectRatio ratio={16 / 9}>
                   {blog.main_image && (
@@ -151,7 +176,7 @@ export default function Dashboard() {
                   )}
                 </AspectRatio>
               </CardHeader>
-              <CardContent className="p-3">
+              <CardContent className="p-3 flex-grow">
                 <CardTitle className="text-lg mb-2 line-clamp-1">{blog.title}</CardTitle>
                 <p className="text-gray-600 mb-2 text-sm line-clamp-2">{blog.summary}</p>
                 <div className="flex flex-wrap gap-1 mb-2">
@@ -161,40 +186,59 @@ export default function Dashboard() {
                     </Badge>
                   ))}
                   {blog.tags.length > 2 && (
-                    <Badge variant="Outline">+{blog.tags.length - 2} more</Badge>
+                    <Badge variant="outline">+{blog.tags.length - 2} more</Badge>
                   )}
                 </div>
                 <p className="text-xs text-gray-500">Type: {blog.structure_type}</p>
               </CardContent>
-              <CardFooter className="p-3 pt-0 flex justify-between items-center">
+              <CardFooter className="p-3 pt-0 flex justify-between items-center mt-auto">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm">
+                      <Share className="mr-2 h-4 w-4" />
+                      Share
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem 
+                      onClick={() => handleShare('twitter', `https://yourblog.com/blog/${index}`)}
+                      className={`${styles.menuItem} ${styles.twitter}`}
+                    >
+                      <FaTwitter className="mr-2 h-4 w-4" />
+                      Twitter
+                    </DropdownMenuItem>
+                    <DropdownMenuItem 
+                      onClick={() => handleShare('whatsapp', `https://yourblog.com/blog/${index}`)}
+                      className={`${styles.menuItem} ${styles.whatsapp}`}
+                    >
+                      <FaWhatsapp className="mr-2 h-4 w-4" />
+                      WhatsApp
+                    </DropdownMenuItem>
+                    <DropdownMenuItem 
+                      onClick={() => handleShare('linkedin', `https://yourblog.com/blog/${index}`)}
+                      className={`${styles.menuItem} ${styles.linkedin}`}
+                    >
+                      <FaLinkedin className="mr-2 h-4 w-4" />
+                      LinkedIn
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
                 <div className="flex space-x-2">
-                  <button className="text-gray-500 hover:text-blue-500" aria-label="Share on Twitter">
-                    <FaTwitter size={20} />
-                  </button>
-                  <button className="text-gray-500 hover:text-green-500" aria-label="Share on WhatsApp">
-                    <FaWhatsapp size={20} />
-                  </button>
-                  <button className="text-gray-500 hover:text-blue-700" aria-label="Share on LinkedIn">
-                    <FaLinkedin size={20} />
-                  </button>
-                </div>
-                <div className="flex space-x-2">
-                  <Drawer>
-                    <DrawerTrigger asChild>
+                  <Popover>
+                    <PopoverTrigger asChild>
                       <Button 
                         variant="secondary"
                         onClick={() => openPreview(blog)}
+                        size="sm"
                       >
-                        Share
+                        Post
                       </Button>
-                    </DrawerTrigger>
-                    <DrawerContent>
-                      <DrawerHeader>
-                        <DrawerTitle>Post to WordPress</DrawerTitle>
-                      </DrawerHeader>
-                      <div className="p-4 pb-0 max-w-4xl mx-auto">
-                        <div className="grid w-full items-center gap-4">
-                          <div className="flex flex-col space-y-1.5">
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80 border-2 border-white">
+                      <div className="grid gap-4">
+                        <h4 className="font-medium leading-none">Post to WordPress</h4>
+                        <div className="grid gap-2">
+                          <div className="grid gap-1">
                             <Label htmlFor="wordpress-url">WordPress URL</Label>
                             <Input 
                               id="wordpress-url" 
@@ -203,7 +247,7 @@ export default function Dashboard() {
                               placeholder="https://your-wordpress-site.com"
                             />
                           </div>
-                          <div className="flex flex-col space-y-1.5">
+                          <div className="grid gap-1">
                             <Label htmlFor="username">Username</Label>
                             <Input 
                               id="username" 
@@ -212,7 +256,7 @@ export default function Dashboard() {
                               placeholder="WordPress username"
                             />
                           </div>
-                          <div className="flex flex-col space-y-1.5">
+                          <div className="grid gap-1">
                             <Label htmlFor="password">Password</Label>
                             <Input 
                               id="password" 
@@ -223,19 +267,14 @@ export default function Dashboard() {
                             />
                           </div>
                         </div>
-                      </div>
-                      <DrawerFooter>
                         <Button onClick={handlePostToWordPress} disabled={isPosting}>
                           {isPosting ? 'Posting...' : 'Post to WordPress'}
                         </Button>
-                        <DrawerClose asChild>
-                          <Button variant="outline">Cancel</Button>
-                        </DrawerClose>
-                      </DrawerFooter>
-                    </DrawerContent>
-                  </Drawer>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
                   <Link href={`/blog/${index}`} passHref>
-                    <Button>
+                    <Button size="sm">
                       Open
                     </Button>
                   </Link>

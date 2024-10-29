@@ -47,6 +47,11 @@ export const TopNavigation: React.FC<{
   return (
     <header className="bg-background border-b">
       <div className="flex items-center justify-between px-6 py-3">
+        <div>
+          <h1 className="cursor-pointer text-2xl font-extrabold">
+            BlogAI
+          </h1>
+        </div>
         <div className="flex items-center justify-center flex-grow">
           <div className="flex items-center w-1/2">
             <Input type="search" placeholder="Search blogs..." className="w-full" />
