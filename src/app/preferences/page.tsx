@@ -12,11 +12,19 @@ import { FilterDropdown } from "../components/FilterDropdown"
 const contentTypeOptions = ['Technology', 'Productivity', 'Lifestyle']
 const resourceTypeOptions = ['Website', 'PDF', 'YouTube', 'Docs']
 const keywordsOptions = ['AI', 'Machine Learning', 'Web Development', 'Data Science']
+const websiteOptions = ['Medium', 'Dev.to', 'Hashnode']
+const pdfOptions = ['Research Papers', 'E-books', 'Whitepapers']
+const youtubeOptions = ['Tutorials', 'Tech Talks', 'Reviews']
+const docsOptions = ['API Documentation', 'User Guides', 'Technical Specifications']
 
 export default function PreferencesPage() {
   const [contentTypeFilter, setContentTypeFilter] = useState<string[]>([])
   const [resourceTypeFilter, setResourceTypeFilter] = useState<string[]>([])
   const [keywordsFilter, setKeywordsFilter] = useState<string[]>([])
+  const [websiteFilter, setWebsiteFilter] = useState<string[]>([])
+  const [pdfFilter, setPdfFilter] = useState<string[]>([])
+  const [youtubeFilter, setYoutubeFilter] = useState<string[]>([])
+  const [docsFilter, setDocsFilter] = useState<string[]>([])
   const [showAIGenerated, setShowAIGenerated] = useState(false)
   const [autoSaveDrafts, setAutoSaveDrafts] = useState(false)
   const [receiveNotifications, setReceiveNotifications] = useState(false)
@@ -26,6 +34,10 @@ export default function PreferencesPage() {
       contentType: setContentTypeFilter,
       resourceType: setResourceTypeFilter,
       keywords: setKeywordsFilter,
+      website: setWebsiteFilter,
+      pdf: setPdfFilter,
+      youtube: setYoutubeFilter,
+      docs: setDocsFilter,
     }
     const setFilter = filterMap[filterType]
     setFilter(prev => 
@@ -38,17 +50,20 @@ export default function PreferencesPage() {
       contentTypeFilter,
       resourceTypeFilter,
       keywordsFilter,
+      websiteFilter,
+      pdfFilter,
+      youtubeFilter,
+      docsFilter,
       showAIGenerated,
       autoSaveDrafts,
       receiveNotifications,
     }
     console.log('Saving preferences:', preferences)
-    // Here you would typically send this data to your backend
     alert("Preferences saved successfully!")
   }
 
   return (
-    <Layout>
+    <Layout handleFilterChange={handleFilterChange} clearAllFilters={() => {}}>
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-6">Preferences</h1>
         <Tabs defaultValue="content" className="w-full">
@@ -76,6 +91,38 @@ export default function PreferencesPage() {
                   selected={resourceTypeFilter}
                   onSelect={(value) => handleFilterChange('resourceType', value)}
                   onRemove={(value) => handleFilterChange('resourceType', value)}
+                />
+                <FilterDropdown
+                  title="Website"
+                  options={websiteOptions}
+                  selected={websiteFilter}
+                  onSelect={(value) => handleFilterChange('website', value)}
+                  onRemove={(value) => handleFilterChange('website', value)}
+                  visible={resourceTypeFilter.includes('Website')}
+                />
+                <FilterDropdown
+                  title="PDF"
+                  options={pdfOptions}
+                  selected={pdfFilter}
+                  onSelect={(value) => handleFilterChange('pdf', value)}
+                  onRemove={(value) => handleFilterChange('pdf', value)}
+                  visible={resourceTypeFilter.includes('PDF')}
+                />
+                <FilterDropdown
+                  title="YouTube"
+                  options={youtubeOptions}
+                  selected={youtubeFilter}
+                  onSelect={(value) => handleFilterChange('youtube', value)}
+                  onRemove={(value) => handleFilterChange('youtube', value)}
+                  visible={resourceTypeFilter.includes('YouTube')}
+                />
+                <FilterDropdown
+                  title="Docs"
+                  options={docsOptions}
+                  selected={docsFilter}
+                  onSelect={(value) => handleFilterChange('docs', value)}
+                  onRemove={(value) => handleFilterChange('docs', value)}
+                  visible={resourceTypeFilter.includes('Docs')}
                 />
                 <FilterDropdown
                   title="Keywords"
