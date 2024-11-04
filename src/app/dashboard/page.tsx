@@ -29,6 +29,7 @@ import {
 import { Share } from "lucide-react"
 import { cn } from "@/lib/utils"
 import styles from '@/styles/ShareMenu.module.css';
+import Modal from '@/components/ui/modal'; // Import the Modal component
 
 export default function Dashboard() {
   const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null);
@@ -36,9 +37,15 @@ export default function Dashboard() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isPosting, setIsPosting] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openPreview = (blog: Blog) => {
     setSelectedBlog(blog);
+    setIsModalOpen(true); // Open the modal
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false); // Close the modal
   };
 
   const handlePostToWordPress = async () => {
@@ -224,55 +231,13 @@ export default function Dashboard() {
                   </DropdownMenuContent>
                 </DropdownMenu>
                 <div className="flex space-x-2">
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button 
-                        variant="secondary"
-                        onClick={() => openPreview(blog)}
-                        size="sm"
-                      >
-                        Post
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-80 border-2 border-white">
-                      <div className="grid gap-4">
-                        <h4 className="font-medium leading-none">Post to WordPress</h4>
-                        <div className="grid gap-2">
-                          <div className="grid gap-1">
-                            <Label htmlFor="wordpress-url">WordPress URL</Label>
-                            <Input 
-                              id="wordpress-url" 
-                              value={wordpressUrl}
-                              onChange={(e) => setWordpressUrl(e.target.value)}
-                              placeholder="https://your-wordpress-site.com"
-                            />
-                          </div>
-                          <div className="grid gap-1">
-                            <Label htmlFor="username">Username</Label>
-                            <Input 
-                              id="username" 
-                              value={username}
-                              onChange={(e) => setUsername(e.target.value)}
-                              placeholder="WordPress username"
-                            />
-                          </div>
-                          <div className="grid gap-1">
-                            <Label htmlFor="password">Password</Label>
-                            <Input 
-                              id="password" 
-                              type="password"
-                              value={password}
-                              onChange={(e) => setPassword(e.target.value)}
-                              placeholder="WordPress application password"
-                            />
-                          </div>
-                        </div>
-                        <Button onClick={handlePostToWordPress} disabled={isPosting}>
-                          {isPosting ? 'Posting...' : 'Post to WordPress'}
-                        </Button>
-                      </div>
-                    </PopoverContent>
-                  </Popover>
+                  <Button 
+                    variant="secondary"
+                    onClick={() => openPreview(blog)}
+                    size="sm"
+                  >
+                    Post
+                  </Button>
                   <Link href={`/blog/${index}`} passHref>
                     <Button size="sm">
                       Open
@@ -284,6 +249,45 @@ export default function Dashboard() {
           ))}
         </div>
       </div>
+
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <div className="grid gap-4">
+          <h4 className="font-medium leading-none">Post to WordPress</h4>
+          <div className="grid gap-2">
+            <div className="grid gap-1">
+              <Label htmlFor="wordpress-url">WordPress URL</Label>
+              <Input 
+                id="wordpress-url" 
+                value={wordpressUrl}
+                onChange={(e) => setWordpressUrl(e.target.value)}
+                placeholder="https://your-wordpress-site.com"
+              />
+            </div>
+            <div className="grid gap-1">
+              <Label htmlFor="username">Username</Label>
+              <Input 
+                id="username" 
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="WordPress username"
+              />
+            </div>
+            <div className="grid gap-1">
+              <Label htmlFor="password">Password</Label>
+              <Input 
+                id="password" 
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="WordPress application password"
+              />
+            </div>
+          </div>
+          <Button onClick={handlePostToWordPress} disabled={isPosting}>
+            {isPosting ? 'Posting...' : 'Post to WordPress'}
+          </Button>
+        </div>
+      </Modal>
     </Layout>
   );
 }
