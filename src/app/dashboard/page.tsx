@@ -262,7 +262,7 @@ export default function Dashboard() {
                   >
                     Post
                   </Button>
-                  <Link href={`/blog/${index}`} passHref>
+                  <Link href={`/blog/${blog.id}`} passHref>
                     <Button size="sm">
                       Open
                     </Button>

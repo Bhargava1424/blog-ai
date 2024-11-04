@@ -1,11 +1,11 @@
-"use client"
-
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import Layout from '../../components/Layout';
+import { Blog } from '../../data/blog';
 
 export default function BlogDetail() {
-  const { id } = useParams();
+  const router = useRouter();
+  const { id } = router.query;
   const [blog, setBlog] = useState<Blog | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -55,4 +55,4 @@ export default function BlogDetail() {
       </div>
     </Layout>
   );
-}
+} 
