@@ -13,6 +13,7 @@ import { FaTwitter, FaWhatsapp, FaLinkedin } from 'react-icons/fa';
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
+import { Skeleton } from '@/components/ui/skeleton'; 
 import { Label } from "@/components/ui/label"
 import {
   DropdownMenu,
@@ -33,6 +34,7 @@ export default function Dashboard() {
   const [isPosting, setIsPosting] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSummarizerModalOpen, setIsSummarizerModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -49,6 +51,8 @@ export default function Dashboard() {
         setBlogs(data);
       } catch (error) {
         console.error('Error fetching blogs:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -192,85 +196,107 @@ export default function Dashboard() {
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {blogs.map((blog, index) => (
-            <Card key={index} className="overflow-hidden flex flex-col">
-              <CardHeader className="p-0">
-                <AspectRatio ratio={16 / 9}>
-                  {blog.image_url && (
-                    <Image
-                      src={blog.image_url}
-                      alt={blog.title}
-                      layout="fill"
-                      className="object-cover"
-                      unoptimized
-                    />
-                  )}
-                </AspectRatio>
-              </CardHeader>
-              <CardContent className="p-3 flex-grow">
-                <CardTitle className="text-lg mb-2 line-clamp-1">{blog.title}</CardTitle>
-                <p className="text-gray-600 mb-2 text-sm line-clamp-2">{blog.summary_result}</p>
-                <div className="flex flex-wrap gap-1 mb-2">
-                  {(blog.tags || []).slice(0, 2).map((tag, tagIndex) => (
-                    <Badge key={tagIndex} variant="secondary">
-                      {tag}
-                    </Badge>
-                  ))}
-                  {blog.tags && blog.tags.length > 2 && (
-                    <Badge variant="outline">+{blog.tags.length - 2} more</Badge>
-                  )}
-                </div>
-                <p className="text-xs text-gray-500">Type: {blog.structure_type}</p>
-              </CardContent>
-              <CardFooter className="p-3 pt-0 flex justify-between items-center mt-auto">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="sm">
-                      <Share className="mr-2 h-4 w-4" />
-                      Share
+          {isLoading ? (
+            Array.from({ length: 8 }).map((_, index) => (
+              <Card key={index} className="overflow-hidden flex flex-col">
+                <CardHeader className="p-0">
+                  <AspectRatio ratio={16 / 9}>
+                    <Skeleton className="w-full h-full" />
+                  </AspectRatio>
+                </CardHeader>
+                <CardContent className="p-3 flex-grow">
+                  <Skeleton className="h-6 mb-2" />
+                  <Skeleton className="h-4 mb-2" />
+                  <Skeleton className="h-4 mb-2" />
+                  <Skeleton className="h-4" />
+                </CardContent>
+                <CardFooter className="p-3 pt-0 flex justify-between items-center mt-auto">
+                  <Skeleton className="h-8 w-20" />
+                  <Skeleton className="h-8 w-20" />
+                </CardFooter>
+              </Card>
+            ))
+          ) : (
+            blogs.map((blog, index) => (
+              <Card key={index} className="overflow-hidden flex flex-col">
+                <CardHeader className="p-0">
+                  <AspectRatio ratio={16 / 9}>
+                    {blog.image_url && (
+                      <Image
+                        src={blog.image_url}
+                        alt={blog.title}
+                        layout="fill"
+                        className="object-cover"
+                        unoptimized
+                      />
+                    )}
+                  </AspectRatio>
+                </CardHeader>
+                <CardContent className="p-3 flex-grow">
+                  <CardTitle className="text-lg mb-2 line-clamp-1">{blog.title}</CardTitle>
+                  <p className="text-gray-600 mb-2 text-sm line-clamp-2">{blog.summary_result}</p>
+                  <div className="flex flex-wrap gap-1 mb-2">
+                    {(blog.tags || []).slice(0, 2).map((tag, tagIndex) => (
+                      <Badge key={tagIndex} variant="secondary">
+                        {tag}
+                      </Badge>
+                    ))}
+                    {blog.tags && blog.tags.length > 2 && (
+                      <Badge variant="outline">+{blog.tags.length - 2} more</Badge>
+                    )}
+                  </div>
+                  <p className="text-xs text-gray-500">Type: {blog.structure_type}</p>
+                </CardContent>
+                <CardFooter className="p-3 pt-0 flex justify-between items-center mt-auto">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" size="sm">
+                        <Share className="mr-2 h-4 w-4" />
+                        Share
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuItem 
+                        onClick={() => handleShare('twitter', `https://yourblog.com/blog/${index}`)}
+                        className="menuItem twitter"
+                      >
+                        <FaTwitter className="mr-2 h-4 w-4" />
+                        Twitter
+                      </DropdownMenuItem>
+                      <DropdownMenuItem 
+                        onClick={() => handleShare('whatsapp', `https://yourblog.com/blog/${index}`)}
+                        className="menuItem whatsapp"
+                      >
+                        <FaWhatsapp className="mr-2 h-4 w-4" />
+                        WhatsApp
+                      </DropdownMenuItem>
+                      <DropdownMenuItem 
+                        onClick={() => handleShare('linkedin', `https://yourblog.com/blog/${index}`)}
+                        className="menuItem linkedin"
+                      >
+                        <FaLinkedin className="mr-2 h-4 w-4" />
+                        LinkedIn
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                  <div className="flex space-x-2">
+                    <Button 
+                      variant="secondary"
+                      onClick={() => openPreview(blog)}
+                      size="sm"
+                    >
+                      Post
                     </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem 
-                      onClick={() => handleShare('twitter', `https://yourblog.com/blog/${index}`)}
-                      className="menuItem twitter"
-                    >
-                      <FaTwitter className="mr-2 h-4 w-4" />
-                      Twitter
-                    </DropdownMenuItem>
-                    <DropdownMenuItem 
-                      onClick={() => handleShare('whatsapp', `https://yourblog.com/blog/${index}`)}
-                      className="menuItem whatsapp"
-                    >
-                      <FaWhatsapp className="mr-2 h-4 w-4" />
-                      WhatsApp
-                    </DropdownMenuItem>
-                    <DropdownMenuItem 
-                      onClick={() => handleShare('linkedin', `https://yourblog.com/blog/${index}`)}
-                      className="menuItem linkedin"
-                    >
-                      <FaLinkedin className="mr-2 h-4 w-4" />
-                      LinkedIn
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-                <div className="flex space-x-2">
-                  <Button 
-                    variant="secondary"
-                    onClick={() => openPreview(blog)}
-                    size="sm"
-                  >
-                    Post
-                  </Button>
-                  <Link href={`/blog/${blog.id}`} passHref>
-                    <Button size="sm">
-                      Open
-                    </Button>
-                  </Link>
-                </div>
-              </CardFooter>
-            </Card>
-          ))}
+                    <Link href={`/blog/${blog.id}`} passHref>
+                      <Button size="sm">
+                        Open
+                      </Button>
+                    </Link>
+                  </div>
+                </CardFooter>
+              </Card>
+            ))
+          )}
         </div>
       </div>
 

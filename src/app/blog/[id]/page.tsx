@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Layout from '../../components/Layout';
+import { Skeleton } from '@/components/ui/skeleton'; // Import the Skeleton component from Shadcn
 
 export default function BlogDetail() {
   const { id } = useParams();
@@ -27,7 +28,7 @@ export default function BlogDetail() {
           setBlog(data);
         } catch (error) {
           console.error('Error fetching blog details:', error);
-          setError(error.message);
+          setError((error as Error).message); // Type assertion to fix 'unknown' type error
         }
       };
 
@@ -42,7 +43,16 @@ export default function BlogDetail() {
   }
 
   if (!blog) {
-    return <p>Loading...</p>;
+    return (
+      <Layout>
+        <div className="container mx-auto px-4 py-8">
+          <Skeleton className="h-8 mb-6" /> {/* Skeleton for title */}
+          <Skeleton className="w-full h-64 mb-4" /> {/* Skeleton for image */}
+          <Skeleton className="h-4 mb-4" /> {/* Skeleton for summary */}
+          <Skeleton className="h-32" /> {/* Skeleton for content */}
+        </div>
+      </Layout>
+    );
   }
 
   return (
