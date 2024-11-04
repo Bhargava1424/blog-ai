@@ -2,21 +2,15 @@
 
 "use client"
 
-import React, { useState } from 'react';
-import { blogs, Blog } from '../data/blog';
+import React, { useState, useEffect } from 'react';
+import { Blog } from '../data/blog';
 import Link from 'next/link';
 import Image from 'next/image';
 import Layout from '../components/Layout';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { FaTwitter, FaWhatsapp, FaLinkedin, FaClock, FaTags } from 'react-icons/fa';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
+import { FaTwitter, FaWhatsapp, FaLinkedin } from 'react-icons/fa';
 import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -27,25 +21,53 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Share } from "lucide-react"
-import { cn } from "@/lib/utils"
-import styles from '@/styles/ShareMenu.module.css';
 import Modal from '@/components/ui/modal'; // Import the Modal component
+import styles from '@/styles/ShareMenu.module.css'; // Ensure this import is present
 
 export default function Dashboard() {
+  const [blogs, setBlogs] = useState<Blog[]>([]);
   const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null);
   const [wordpressUrl, setWordpressUrl] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isPosting, setIsPosting] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSummarizerModalOpen, setIsSummarizerModalOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:8000/article/', {
+          headers: {
+            'Accept': 'application/json',
+          },
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch blogs');
+        }
+        const data = await response.json();
+        setBlogs(data);
+      } catch (error) {
+        console.error('Error fetching blogs:', error);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
 
   const openPreview = (blog: Blog) => {
     setSelectedBlog(blog);
-    setIsModalOpen(true); // Open the modal
+    setIsSummarizerModalOpen(true); // Open the summarizer modal first
   };
 
   const closeModal = () => {
-    setIsModalOpen(false); // Close the modal
+    setIsModalOpen(false);
+    setIsSummarizerModalOpen(false);
+  };
+
+  const handleSummarize = () => {
+    setIsSummarizerModalOpen(false);
+    setIsModalOpen(true); // Open the main modal after summarizing
   };
 
   const handlePostToWordPress = async () => {
@@ -91,6 +113,8 @@ export default function Dashboard() {
   };
 
   const renderPreviewContent = (blog: Blog) => {
+    if (!blog.steps) return null;
+
     switch (blog.structure_type) {
       case 'tutorial':
         return (
@@ -102,7 +126,7 @@ export default function Dashboard() {
                   {step.title}
                   {step.image && (
                     <img 
-                      src={step.image} 
+                      src={step.image.path}
                       alt={step.title} 
                       style={{ maxWidth: '100%', height: 'auto', maxHeight: '300px', objectFit: 'cover' }} 
                     />
@@ -187,12 +211,12 @@ export default function Dashboard() {
                 <CardTitle className="text-lg mb-2 line-clamp-1">{blog.title}</CardTitle>
                 <p className="text-gray-600 mb-2 text-sm line-clamp-2">{blog.summary}</p>
                 <div className="flex flex-wrap gap-1 mb-2">
-                  {blog.tags.slice(0, 2).map((tag, tagIndex) => (
+                  {(blog.tags || []).slice(0, 2).map((tag, tagIndex) => (
                     <Badge key={tagIndex} variant="secondary">
                       {tag}
                     </Badge>
                   ))}
-                  {blog.tags.length > 2 && (
+                  {blog.tags && blog.tags.length > 2 && (
                     <Badge variant="outline">+{blog.tags.length - 2} more</Badge>
                   )}
                 </div>
@@ -209,21 +233,21 @@ export default function Dashboard() {
                   <DropdownMenuContent>
                     <DropdownMenuItem 
                       onClick={() => handleShare('twitter', `https://yourblog.com/blog/${index}`)}
-                      className={`${styles.menuItem} ${styles.twitter}`}
+                      className="menuItem twitter"
                     >
                       <FaTwitter className="mr-2 h-4 w-4" />
                       Twitter
                     </DropdownMenuItem>
                     <DropdownMenuItem 
                       onClick={() => handleShare('whatsapp', `https://yourblog.com/blog/${index}`)}
-                      className={`${styles.menuItem} ${styles.whatsapp}`}
+                      className="menuItem whatsapp"
                     >
                       <FaWhatsapp className="mr-2 h-4 w-4" />
                       WhatsApp
                     </DropdownMenuItem>
                     <DropdownMenuItem 
                       onClick={() => handleShare('linkedin', `https://yourblog.com/blog/${index}`)}
-                      className={`${styles.menuItem} ${styles.linkedin}`}
+                      className="menuItem linkedin"
                     >
                       <FaLinkedin className="mr-2 h-4 w-4" />
                       LinkedIn
@@ -249,6 +273,16 @@ export default function Dashboard() {
           ))}
         </div>
       </div>
+
+      <Modal isOpen={isSummarizerModalOpen} onClose={closeModal}>
+        <div className="grid gap-4">
+          <h4 className="font-medium leading-none">Summarizer</h4>
+          <p>empty</p>
+          <Button onClick={handleSummarize}>
+            Summarize
+          </Button>
+        </div>
+      </Modal>
 
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <div className="grid gap-4">
