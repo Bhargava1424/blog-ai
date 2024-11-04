@@ -196,11 +196,11 @@ export default function Dashboard() {
             <Card key={index} className="overflow-hidden flex flex-col">
               <CardHeader className="p-0">
                 <AspectRatio ratio={16 / 9}>
-                  {blog.main_image && (
+                  {blog.image_url && (
                     <Image
-                      src={blog.main_image.path}
-                      alt={blog.main_image.alt_text}
-                      fill
+                      src={blog.image_url}
+                      alt={blog.title}
+                      layout="fill"
                       className="object-cover"
                       unoptimized
                     />
@@ -209,7 +209,7 @@ export default function Dashboard() {
               </CardHeader>
               <CardContent className="p-3 flex-grow">
                 <CardTitle className="text-lg mb-2 line-clamp-1">{blog.title}</CardTitle>
-                <p className="text-gray-600 mb-2 text-sm line-clamp-2">{blog.summary}</p>
+                <p className="text-gray-600 mb-2 text-sm line-clamp-2">{blog.summary_result}</p>
                 <div className="flex flex-wrap gap-1 mb-2">
                   {(blog.tags || []).slice(0, 2).map((tag, tagIndex) => (
                     <Badge key={tagIndex} variant="secondary">
