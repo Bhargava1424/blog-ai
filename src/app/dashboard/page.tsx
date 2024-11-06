@@ -3,7 +3,6 @@
 "use client"
 
 import React, { useState, useEffect } from 'react';
-import { Blog } from '../data/blog';
 import Link from 'next/link';
 import Image from 'next/image';
 import Layout from '../components/Layout';
@@ -23,12 +22,33 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Share } from "lucide-react"
 import Modal from '@/components/ui/modal'; // Import the Modal component
-import styles from '@/styles/ShareMenu.module.css'; // Ensure this import is present
 import { extractDomain } from '@/lib/utils'; // We'll create this utility function
 
+// Add the interface for the API response
+interface ArticleResponse {
+  id: string;
+  title: string;
+  published: string;
+  link?: string;
+  source?: string;
+  image_url?: string;
+  scrape_result?: string;
+  summary_result?: string;
+  blog_result?: string;
+  image_result?: string;
+  keyword_result?: string;
+  created_at: string;
+}
+
+// Fix the error handling type
+interface WordPressError {
+  message?: string;
+  code?: string;
+}
+
 export default function Dashboard() {
-  const [blogs, setBlogs] = useState<Blog[]>([]);
-  const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null);
+  const [blogs, setBlogs] = useState<ArticleResponse[]>([]);
+  const [selectedBlog, setSelectedBlog] = useState<ArticleResponse | null>(null);
   const [wordpressUrl, setWordpressUrl] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -38,7 +58,8 @@ export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [domains, setDomains] = useState<string[]>([]);
   const [selectedDomain, setSelectedDomain] = useState<string>('all');
-  const [filteredBlogs, setFilteredBlogs] = useState<Blog[]>([]);
+  const [filteredBlogs, setFilteredBlogs] = useState<ArticleResponse[]>([]);
+  const [postStatus, setPostStatus] = useState<'draft' | 'publish'>('draft');
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -81,7 +102,7 @@ export default function Dashboard() {
     }
   }, [selectedDomain, blogs]);
 
-  const openPreview = (blog: Blog) => {
+  const openPreview = (blog: ArticleResponse) => {
     setSelectedBlog(blog);
     setIsSummarizerModalOpen(true); // Open the summarizer modal first
   };
@@ -97,103 +118,117 @@ export default function Dashboard() {
   };
 
   const handlePostToWordPress = async () => {
-    if (!selectedBlog) return;
+    if (!wordpressUrl || !username || !password) {
+      alert('Please fill in all WordPress credentials');
+      return;
+    }
+
+    if (!wordpressUrl.startsWith('http://') && !wordpressUrl.startsWith('https://')) {
+      alert('Please enter a valid WordPress URL starting with http:// or https://');
+      return;
+    }
+
+    if (!selectedBlog) {
+      console.error('No blog selected');
+      return;
+    }
 
     setIsPosting(true);
 
     try {
-      // Construct HTML content with controlled image size
-      const content = `
-        <img src="${selectedBlog.main_image?.path}" alt="${selectedBlog.main_image?.alt_text}" style="max-width: 100%; height: auto; max-height: 400px; object-fit: cover;">
-        <p>${selectedBlog.summary}</p>
-        ${renderPreviewContent(selectedBlog)}
-      `;
+      // Clean up the WordPress URL
+      const cleanWordPressUrl = wordpressUrl.replace(/\/?$/, '');
 
+      // Format the blog content using the actual API response data structure
+      const content = `
+        <!-- wp:heading -->
+        <h2>${selectedBlog.title}</h2>
+        <!-- /wp:heading -->
+
+        ${selectedBlog.image_url ? `
+        <!-- wp:image -->
+        <figure class="wp-block-image">
+          <img src="${selectedBlog.image_url}" alt="${selectedBlog.title}"/>
+        </figure>
+        <!-- /wp:image -->
+        ` : ''}
+
+        ${selectedBlog.summary_result && selectedBlog.summary_result !== "Error generating summary: Request timed out." ? `
+        <!-- wp:paragraph -->
+        <p>${selectedBlog.summary_result}</p>
+        <!-- /wp:paragraph -->
+        ` : ''}
+
+        ${selectedBlog.scrape_result && selectedBlog.scrape_result !== "No meaningful content found" ? `
+        <!-- wp:paragraph -->
+        <p>${selectedBlog.scrape_result}</p>
+        <!-- /wp:paragraph -->
+        ` : ''}
+
+        ${selectedBlog.blog_result ? `
+        <!-- wp:paragraph -->
+        <p>${selectedBlog.blog_result}</p>
+        <!-- /wp:paragraph -->
+        ` : ''}
+
+        <!-- wp:paragraph -->
+        <p>Published: ${selectedBlog.published || 'No date available'}</p>
+        <!-- /wp:paragraph -->
+
+        ${selectedBlog.link ? `
+        <!-- wp:paragraph -->
+        <p>Source: <a href="${selectedBlog.link}">${selectedBlog.source || 'Original Article'}</a></p>
+        <!-- /wp:paragraph -->
+        ` : ''}
+      `.trim();
+
+      // Prepare the post data according to WordPress REST API specifications
       const postData = {
         title: selectedBlog.title,
         content: content,
         status: 'publish',
+        format: 'standard'
       };
 
-      const response = await fetch(`${wordpressUrl}/wp-json/wp/v2/posts`, {
+      // Create Basic Auth header
+      const authHeader = 'Basic ' + btoa(`${username}:${password}`);
+
+      // Make the POST request to WordPress
+      const response = await fetch(`${cleanWordPressUrl}/wp-json/wp/v2/posts`, {
         method: 'POST',
         headers: {
+          'Authorization': authHeader,
           'Content-Type': 'application/json',
-          'Authorization': 'Basic ' + btoa(username + ':' + password),
+          'Accept': 'application/json',
         },
-        body: JSON.stringify(postData),
+        body: JSON.stringify(postData)
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(`Failed to post to WordPress: ${errorData.message}`);
+        console.log('WordPress API Error:', {
+          status: response.status,
+          statusText: response.statusText,
+          headers: Object.fromEntries(response.headers.entries()),
+          error: errorData
+        });
+        throw new Error(
+          `WordPress Error (${response.status}): ${errorData.message || 'Unknown error'}`
+        );
       }
 
-      alert('Blog successfully posted to WordPress!');
+      await response.json();
+      
+      // Show success message
+      alert('Successfully posted to WordPress!');
+      closeModal();
+
     } catch (error) {
-      console.error('Error posting to WordPress:', error);
-      alert(`Failed to post blog to WordPress. Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      const wpError = error as WordPressError;
+      console.error('Error posting to WordPress:', wpError);
+      alert(`Failed to post to WordPress: ${wpError.message || 'Unknown error'}`);
     } finally {
       setIsPosting(false);
-    }
-  };
-
-  const renderPreviewContent = (blog: Blog) => {
-    if (!blog.steps) return null;
-
-    switch (blog.structure_type) {
-      case 'tutorial':
-        return (
-          <>
-            <h3 className="font-semibold mt-4">Steps:</h3>
-            <ol className="list-decimal list-inside">
-              {blog.steps.map((step, index) => (
-                <li key={index} className="mt-2">
-                  {step.title}
-                  {step.image && (
-                    <img 
-                      src={step.image.path}
-                      alt={step.title} 
-                      style={{ maxWidth: '100%', height: 'auto', maxHeight: '300px', objectFit: 'cover' }} 
-                    />
-                  )}
-                </li>
-              ))}
-            </ol>
-          </>
-        );
-      case 'comparison':
-        return (
-          <>
-            <h3 className="font-semibold mt-4">Comparison Points:</h3>
-            <ul className="list-disc list-inside">
-              {blog.comparison_points.slice(0, 3).map((point, index) => (
-                <li key={index} className="mt-2">{point.feature}</li>
-              ))}
-            </ul>
-            {blog.comparison_points.length > 3 && <p className="mt-2 text-sm text-gray-500">...and {blog.comparison_points.length - 3} more points</p>}
-          </>
-        );
-      case 'review':
-        return (
-          <>
-            <h3 className="font-semibold mt-4">Pros:</h3>
-            <ul className="list-disc list-inside">
-              {blog.pros.slice(0, 3).map((pro, index) => (
-                <li key={index} className="mt-1">{pro}</li>
-              ))}
-            </ul>
-            <h3 className="font-semibold mt-4">Cons:</h3>
-            <ul className="list-disc list-inside">
-              {blog.cons.slice(0, 3).map((con, index) => (
-                <li key={index} className="mt-1">{con}</li>
-              ))}
-            </ul>
-          </>
-        );
-      // Add more cases for other blog types as needed
-      default:
-        return null;
     }
   };
 
@@ -213,8 +248,8 @@ export default function Dashboard() {
     window.open(shareUrl, '_blank');
   };
 
-  const handleFilterChange = (filter: string, value: string) => {
-    // Implement filter logic here
+  const handleFilterChange = () => {
+    // Implement filter logic here if needed
   };
 
   const clearAllFilters = () => {
@@ -272,7 +307,7 @@ export default function Dashboard() {
                   <CardTitle className="text-lg mb-2 line-clamp-1">{blog.title}</CardTitle>
                   <p className="text-gray-600 mb-2 text-sm line-clamp-2">{blog.summary_result}</p>
                   <div className="flex flex-wrap gap-1 mb-2">
-                    {(blog.tags || []).slice(0, 2).map((tag, tagIndex) => (
+                    {(blog.tags || []).slice(0, 2).map((tag: string, tagIndex: number) => (
                       <Badge key={tagIndex} variant="secondary">
                         {tag}
                       </Badge>
@@ -378,9 +413,32 @@ export default function Dashboard() {
                 placeholder="WordPress application password"
               />
             </div>
+            <div className="grid gap-1">
+              <Label htmlFor="post-status">Post Status</Label>
+              <select 
+                id="post-status"
+                value={postStatus}
+                onChange={(e) => setPostStatus(e.target.value as 'draft' | 'publish')}
+                className="form-select"
+              >
+                <option value="draft">Save as Draft</option>
+                <option value="publish">Publish Immediately</option>
+              </select>
+            </div>
           </div>
-          <Button onClick={handlePostToWordPress} disabled={isPosting}>
-            {isPosting ? 'Posting...' : 'Post to WordPress'}
+          <Button 
+            onClick={handlePostToWordPress} 
+            disabled={isPosting}
+            className={isPosting ? 'opacity-50 cursor-not-allowed' : ''}
+          >
+            {isPosting ? (
+              <>
+                <span className="animate-spin mr-2">⌛</span>
+                Posting...
+              </>
+            ) : (
+              'Post to WordPress'
+            )}
           </Button>
         </div>
       </Modal>

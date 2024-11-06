@@ -75,7 +75,6 @@ const FilterComponent: React.FC<FilterComponentProps> = ({
       </div>
       <div className="overflow-y-auto flex-grow px-4 pb-4">
         <div className="space-y-6">
-          
           <div className="space-y-2">
             <Label htmlFor="domain-filter">Filter by Domain</Label>
             <select
