@@ -66,7 +66,7 @@ const Layout: React.FC<LayoutProps> = ({
               <Separator className="mt-4" orientation="vertical" />
             </>
           )}
-          <main className="flex-1 w-full">
+          <main className="flex-1 w-full overflow-y-auto">
             {children}
           </main>
         </div>
