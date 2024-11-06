@@ -11,6 +11,7 @@ import Layout from '@/app/components/Layout'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { useState } from 'react'
 import { Trash2 } from "lucide-react"
+import { useToast } from "@/hooks/use-toast"
 
 interface UrlPair {
   url: string;
@@ -21,7 +22,7 @@ const Resources = () => {
   const [urlPairs, setUrlPairs] = useState<UrlPair[]>([
     { url: '', domain: '' }
   ]);
-  const [errorMessage, setErrorMessage] = useState<string>('');
+  const { toast } = useToast();
 
   // Add these props to match Layout interface
   const handleFilterChange = () => {};
@@ -29,7 +30,6 @@ const Resources = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMessage('');
     
     // Convert urlPairs array to required format
     const urlsObject = urlPairs.reduce((acc, pair) => {
@@ -38,7 +38,7 @@ const Resources = () => {
     }, {} as Record<string, string>);
 
     try {
-      const response = await fetch('/api/add-urls', {
+      const response = await fetch('http://127.0.0.1:8000/xml/add-urls', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -51,12 +51,19 @@ const Resources = () => {
       if (response.ok) {
         // Reset form on success
         setUrlPairs([{ url: '', domain: '' }]);
-        alert(data.message); // Simple success message
+        toast({
+          title: "Success",
+          description: data.message,
+        });
       } else {
         throw new Error(data.errors?.join('\n') || 'Failed to add URLs');
       }
-    } catch (error: any) {
-      setErrorMessage(error.message || 'An error occurred');
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : 'An error occurred',
+        variant: "destructive",
+      });
     }
   };
 
@@ -193,11 +200,6 @@ const Resources = () => {
                 <CardTitle>Add RSS/XML Feeds</CardTitle>
               </CardHeader>
               <CardContent>
-                {errorMessage && (
-                  <div className="mb-4 p-4 text-red-500 bg-red-50 rounded-md">
-                    {errorMessage}
-                  </div>
-                )}
                 <form onSubmit={handleSubmit}>
                   <div className="grid w-full items-center gap-6">
                     {urlPairs.map((pair, index) => (
@@ -261,7 +263,6 @@ const Resources = () => {
                       variant="outline"
                       onClick={() => {
                         setUrlPairs([{ url: '', domain: '' }]);
-                        setErrorMessage('');
                       }}
                     >
                       Clear All
