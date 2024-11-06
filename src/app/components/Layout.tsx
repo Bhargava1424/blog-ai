@@ -3,10 +3,9 @@
 import React from 'react';
 import { usePathname } from 'next/navigation';
 import Sidebar from './Sidebar';
-import SecondSidebar from './SecondSidebar';
 import { TopNavigation } from './TopNavigation';
-import { Separator } from '@/components/ui/separator';
 import FilterComponent from './FilterComponent';
+import { Separator } from '@/components/ui/separator';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -15,6 +14,12 @@ interface LayoutProps {
   domains: string[];
   selectedDomain: string;
   onDomainChange: (domain: string) => void;
+  isLoggedIn: boolean;
+  setIsLoggedIn: (value: boolean) => void;
+  showSignUp: boolean;
+  setShowSignUp: (value: boolean) => void;
+  isPreferredContent: boolean;
+  togglePreferredContent: () => void;
 }
 
 const Layout: React.FC<LayoutProps> = ({
@@ -23,27 +28,45 @@ const Layout: React.FC<LayoutProps> = ({
   clearAllFilters,
   domains,
   selectedDomain,
-  onDomainChange
+  onDomainChange,
+  isLoggedIn,
+  setIsLoggedIn,
+  showSignUp,
+  setShowSignUp,
+  isPreferredContent,
+  togglePreferredContent
 }) => {
   const pathname = usePathname();
-  const showSecondSidebar = ['/', '/my-blog'].includes(pathname);
+  const showFilter = ['/'].includes(pathname);
 
   return (
-    <div className="flex min-h-screen">
-      <Sidebar />
-      <div className="flex-1">
-        <TopNavigation />
-        <div className="flex">
-          <div className="w-64 p-4">
-            <FilterComponent 
-              handleFilterChange={handleFilterChange}
-              clearAllFilters={clearAllFilters}
-              domains={domains}
-              selectedDomain={selectedDomain}
-              onDomainChange={onDomainChange}
-            />
-          </div>
-          <main className="flex-1">
+    <div className="flex flex-col h-screen">
+      <TopNavigation 
+        isLoggedIn={isLoggedIn}
+        setIsLoggedIn={setIsLoggedIn}
+        showSignUp={showSignUp}
+        setShowSignUp={setShowSignUp}
+        isPreferredContent={isPreferredContent}
+        togglePreferredContent={togglePreferredContent}
+      />
+      <div className="flex flex-1 overflow-hidden">
+        <Sidebar />
+        <div className="flex flex-1">
+          {showFilter && (
+            <>
+              <div className="w-64 p-4">
+                <FilterComponent 
+                  handleFilterChange={handleFilterChange}
+                  clearAllFilters={clearAllFilters}
+                  domains={domains}
+                  selectedDomain={selectedDomain}
+                  onDomainChange={onDomainChange}
+                />
+              </div>
+              <Separator className="mt-4" orientation="vertical" />
+            </>
+          )}
+          <main className="flex-1 w-full">
             {children}
           </main>
         </div>

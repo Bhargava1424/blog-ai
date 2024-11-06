@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { FilterDropdown } from './FilterDropdown';
 import { Label } from "@/components/ui/label";
-
+import { Separator } from "@/components/ui/separator";
 type FilterType = 'contentType' | 'resourceType' | 'keywords' | 'website' | 'pdf' | 'youtube' | 'docs';
 
 interface FilterComponentProps {
@@ -94,6 +94,7 @@ const FilterComponent: React.FC<FilterComponentProps> = ({
         </div>
       </div>
     </div>
+    
   );
 };
 

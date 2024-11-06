@@ -46,7 +46,7 @@ const Sidebar: React.FC = () => {
           {isExpanded ? <ChevronLeft className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
         </Button>
       </div>
-      <nav className="mt-8 space-y-2 px-2">
+      <nav className="space-y-2 px-2">
         <NavItem href="/" icon={Home} label="Dashboard" />
         <NavItem href="/my-blog" icon={BookOpen} label="My Blogs" />
         <NavItem href="/resources" icon={Upload} label="Resources" />
