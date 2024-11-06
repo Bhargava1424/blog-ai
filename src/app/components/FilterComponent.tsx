@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { FilterDropdown } from './FilterDropdown';
+import { Label } from "@/components/ui/label";
 
 type FilterType = 'contentType' | 'resourceType' | 'keywords' | 'website' | 'pdf' | 'youtube' | 'docs';
 
@@ -14,6 +15,9 @@ interface FilterComponentProps {
   docsFilter?: string[];
   handleFilterChange: (filterType: FilterType, value: string) => void;
   clearAllFilters: () => void;
+  domains: string[];
+  selectedDomain: string;
+  onDomainChange: (domain: string) => void;
 }
 
 const FilterComponent: React.FC<FilterComponentProps> = ({
@@ -25,7 +29,10 @@ const FilterComponent: React.FC<FilterComponentProps> = ({
   youtubeFilter = [],
   docsFilter = [],
   handleFilterChange,
-  clearAllFilters
+  clearAllFilters,
+  domains,
+  selectedDomain,
+  onDomainChange
 }) => {
   const showWebsiteFilter = resourceTypeFilter.includes('Website');
   const showPDFFilter = resourceTypeFilter.includes('PDF');
@@ -153,6 +160,22 @@ const FilterComponent: React.FC<FilterComponentProps> = ({
               />
             </div>
           )}
+          <div className="space-y-2">
+            <Label htmlFor="domain-filter">Filter by Domain</Label>
+            <select
+              id="domain-filter"
+              className="w-full border rounded-md p-2"
+              value={selectedDomain}
+              onChange={(e) => onDomainChange(e.target.value)}
+            >
+              <option value="all">All Domains</option>
+              {domains.map((domain) => (
+                <option key={domain} value={domain}>
+                  {domain}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
     </div>

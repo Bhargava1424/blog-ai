@@ -11,13 +11,16 @@ export type Introduction = {
 };
 
 export interface BaseBlog {
-  structure_type: string;
   title: string;
+  link?: string;
+  image_url?: string;
+  summary_result?: string;
+  tags?: string[];
+  structure_type: string;
   main_image: Image;
   summary: string;
   introduction?: Introduction;
   key_words: string[];
-  tags: string[];
 }
 
 export interface Step {

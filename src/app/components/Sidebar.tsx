@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import { Home, BookOpen, Upload, Sliders, Compass, ChevronRight, ChevronLeft } from 'lucide-react';
@@ -6,8 +6,17 @@ import { Home, BookOpen, Upload, Sliders, Compass, ChevronRight, ChevronLeft } f
 const Sidebar: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(false);
 
+  useEffect(() => {
+    const savedState = localStorage.getItem('sidebarExpanded');
+    if (savedState !== null) {
+      setIsExpanded(JSON.parse(savedState));
+    }
+  }, []);
+
   const toggleSidebar = () => {
-    setIsExpanded(!isExpanded);
+    const newState = !isExpanded;
+    setIsExpanded(newState);
+    localStorage.setItem('sidebarExpanded', JSON.stringify(newState));
   };
 
   const NavItem = ({ href, icon: Icon, label }: { href: string; icon: React.ElementType; label: string }) => (

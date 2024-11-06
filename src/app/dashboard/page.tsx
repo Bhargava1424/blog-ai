@@ -24,6 +24,7 @@ import {
 import { Share } from "lucide-react"
 import Modal from '@/components/ui/modal'; // Import the Modal component
 import styles from '@/styles/ShareMenu.module.css'; // Ensure this import is present
+import { extractDomain } from '@/lib/utils'; // We'll create this utility function
 
 export default function Dashboard() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
@@ -35,6 +36,9 @@ export default function Dashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSummarizerModalOpen, setIsSummarizerModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [domains, setDomains] = useState<string[]>([]);
+  const [selectedDomain, setSelectedDomain] = useState<string>('all');
+  const [filteredBlogs, setFilteredBlogs] = useState<Blog[]>([]);
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -58,6 +62,24 @@ export default function Dashboard() {
 
     fetchBlogs();
   }, []);
+
+  useEffect(() => {
+    // Extract unique domains from blogs
+    const uniqueDomains = Array.from(new Set(
+      blogs.map(blog => blog.link ? extractDomain(blog.link) : 'unknown')
+    )).filter(Boolean);
+    setDomains(uniqueDomains);
+  }, [blogs]);
+
+  useEffect(() => {
+    if (selectedDomain === 'all') {
+      setFilteredBlogs(blogs);
+    } else {
+      setFilteredBlogs(blogs.filter(blog => 
+        blog.link && extractDomain(blog.link) === selectedDomain
+      ));
+    }
+  }, [selectedDomain, blogs]);
 
   const openPreview = (blog: Blog) => {
     setSelectedBlog(blog);
@@ -191,10 +213,24 @@ export default function Dashboard() {
     window.open(shareUrl, '_blank');
   };
 
+  const handleFilterChange = (filter: string, value: string) => {
+    // Implement filter logic here
+  };
+
+  const clearAllFilters = () => {
+    setSelectedDomain('all');
+    // Clear other filters if needed
+  };
+
   return (
-    <Layout handleFilterChange={() => {}} clearAllFilters={() => {}}>
+    <Layout 
+      handleFilterChange={handleFilterChange} 
+      clearAllFilters={clearAllFilters}
+      domains={domains}
+      selectedDomain={selectedDomain}
+      onDomainChange={(domain) => setSelectedDomain(domain)}
+    >
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {isLoading ? (
             Array.from({ length: 8 }).map((_, index) => (
@@ -217,7 +253,7 @@ export default function Dashboard() {
               </Card>
             ))
           ) : (
-            blogs.map((blog, index) => (
+            filteredBlogs.map((blog, index) => (
               <Card key={index} className="overflow-hidden flex flex-col">
                 <CardHeader className="p-0">
                   <AspectRatio ratio={16 / 9}>

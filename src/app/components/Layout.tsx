@@ -6,61 +6,47 @@ import Sidebar from './Sidebar';
 import SecondSidebar from './SecondSidebar';
 import { TopNavigation } from './TopNavigation';
 import { Separator } from '@/components/ui/separator';
-
-type FilterType = 'contentType' | 'resourceType' | 'keywords' | 'website' | 'pdf' | 'youtube' | 'docs';
+import FilterComponent from './FilterComponent';
 
 interface LayoutProps {
   children: React.ReactNode;
-  contentTypeFilter?: string[];
-  resourceTypeFilter?: string[];
-  keywordsFilter?: string[];
-  websiteFilter?: string[];
-  pdfFilter?: string[];
-  youtubeFilter?: string[];
-  docsFilter?: string[];
-  handleFilterChange: (filterType: FilterType, value: string) => void;
+  handleFilterChange: (filter: string, value: string) => void;
   clearAllFilters: () => void;
+  domains: string[];
+  selectedDomain: string;
+  onDomainChange: (domain: string) => void;
 }
 
 const Layout: React.FC<LayoutProps> = ({
   children,
-  contentTypeFilter,
-  resourceTypeFilter,
-  keywordsFilter,
-  websiteFilter,
-  pdfFilter,
-  youtubeFilter,
-  docsFilter,
   handleFilterChange,
-  clearAllFilters
+  clearAllFilters,
+  domains,
+  selectedDomain,
+  onDomainChange
 }) => {
   const pathname = usePathname();
   const showSecondSidebar = ['/', '/my-blog'].includes(pathname);
 
   return (
-    <div className="flex flex-col h-screen">
-      <TopNavigation />
-      <div className="flex flex-1 overflow-hidden">
-        <Sidebar />
-        {showSecondSidebar && (
-          <>
-            <SecondSidebar
-              contentTypeFilter={contentTypeFilter}
-              resourceTypeFilter={resourceTypeFilter}
-              keywordsFilter={keywordsFilter}
-              websiteFilter={websiteFilter}
-              pdfFilter={pdfFilter}
-              youtubeFilter={youtubeFilter}
-              docsFilter={docsFilter}
+    <div className="flex min-h-screen">
+      <Sidebar />
+      <div className="flex-1">
+        <TopNavigation />
+        <div className="flex">
+          <div className="w-64 p-4">
+            <FilterComponent 
               handleFilterChange={handleFilterChange}
               clearAllFilters={clearAllFilters}
+              domains={domains}
+              selectedDomain={selectedDomain}
+              onDomainChange={onDomainChange}
             />
-            <Separator className="mt-4" orientation="vertical" />
-          </>
-        )}
-        <main className={`flex-1 overflow-y-auto ${showSecondSidebar ? '' : 'w-full'}`}>
-          {children}
-        </main>
+          </div>
+          <main className="flex-1">
+            {children}
+          </main>
+        </div>
       </div>
     </div>
   );
