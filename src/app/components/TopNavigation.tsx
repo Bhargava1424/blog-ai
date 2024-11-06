@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Search, Bell, Settings, LogOut, Sun, Moon, Sliders } from 'lucide-react';
 import {
@@ -14,15 +14,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogFooter,
-} from "@/components/ui/dialog";
 import { useTheme } from "next-themes";
 
 export const TopNavigation: React.FC<{
@@ -35,10 +26,17 @@ export const TopNavigation: React.FC<{
 }> = ({ isLoggedIn, setIsLoggedIn, showSignUp, setShowSignUp, isPreferredContent, togglePreferredContent }) => {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    localStorage.removeItem('user');
+    router.push('/login');
+  };
 
   if (!mounted) {
     return null;
@@ -48,7 +46,7 @@ export const TopNavigation: React.FC<{
     <header className="bg-background border-b">
       <div className="flex items-center justify-between px-6 py-3">
         <div>
-          <h1 className="cursor-pointer text-2xl font-extrabold">
+          <h1 className="cursor-pointer text-2xl font-extrabold" onClick={() => router.push('/')}>
             BlogAI
           </h1>
         </div>
@@ -102,11 +100,11 @@ export const TopNavigation: React.FC<{
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => router.push('/settings')}>
                   <Settings className="mr-2 h-4 w-4" />
                   <span>Settings</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setIsLoggedIn(false)}>
+                <DropdownMenuItem onClick={handleLogout}>
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>Log out</span>
                 </DropdownMenuItem>
@@ -114,75 +112,17 @@ export const TopNavigation: React.FC<{
             </DropdownMenu>
           ) : (
             <div className="space-x-2">
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button variant="outline">Log In</Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
-                  <DialogHeader>
-                    <DialogTitle>Log In</DialogTitle>
-                    <DialogDescription>
-                      Enter your credentials to access your account.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="grid gap-4 py-4 ">
-                    <div className="grid grid-cols-4 items-center gap-4">
-                      <Label htmlFor="email" className="text-right">
-                        Email
-                      </Label>
-                      <Input id="email" className="col-span-3" />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                      <Label htmlFor="password" className="text-right">
-                        Password
-                      </Label>
-                      <Input id="password" type="password" className="col-span-3" />
-                    </div>
-                  </div>
-                  <DialogFooter>
-                    <Button type="submit" onClick={() => setIsLoggedIn(true)}>Log In</Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
-              <Dialog open={showSignUp} onOpenChange={setShowSignUp}>
-                <DialogTrigger asChild>
-                  <Button>Sign Up</Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
-                  <DialogHeader>
-                    <DialogTitle>Sign Up</DialogTitle>
-                    <DialogDescription>
-                      Create a new account to get started.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-4 items-center gap-4">
-                      <Label htmlFor="name" className="text-right">
-                        Name
-                      </Label>
-                      <Input id="name" className="col-span-3" />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                      <Label htmlFor="email" className="text-right">
-                        Email
-                      </Label>
-                      <Input id="email" className="col-span-3" />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                      <Label htmlFor="password" className="text-right">
-                        Password
-                      </Label>
-                      <Input id="password" type="password" className="col-span-3" />
-                    </div>
-                  </div>
-                  <DialogFooter>
-                    <Button type="submit" onClick={() => {
-                      setIsLoggedIn(true);
-                      setShowSignUp(false);
-                    }}>Sign Up</Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
+              <Button 
+                variant="outline" 
+                onClick={() => router.push('/login')}
+              >
+                Log In
+              </Button>
+              <Button 
+                onClick={() => router.push('/signup')}
+              >
+                Sign Up
+              </Button>
             </div>
           )}
         </div>
